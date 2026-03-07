@@ -257,8 +257,9 @@
         margin: 40px;
         display: block;
         border-radius: 10px;
-        width: 78%;
+        width: 80%;
         height: 65%;
+        /*max-width: 800px;*/
     }
 
     .apartado3 {
