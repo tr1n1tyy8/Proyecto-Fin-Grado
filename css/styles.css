@@ -309,12 +309,20 @@
         color: white;
         text-align: center;
         padding: 20px;
+        display: flex;
+        flex-direction: row;
     }
 
     .pie p {
         color: black;
         color: rgb(161, 161, 161);
         font-size: 15px;
+        margin-left: 70px;
+    }
+
+    .pie a {
+        color: rgb(0, 0, 0);
+        margin-left: 50px;
     }
 
     .apartados_novedades {
@@ -371,6 +379,47 @@
     }
     
 
+    .politica_privacidad {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        align-items: flex-start;
+        padding: 30px;
+    }
+
+    .politica_privacidad h1 {
+        align-self: center;
+        color: rgb(36, 64, 108);
+        margin-bottom: 20px;
+        margin-top: 20px;
+        font-size: 50px;
+    }
+
+    .politica_privacidad h2 {
+        align-items: flex-start;
+        color: rgb(61, 85, 123);
+        margin-top: 50px;
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+
+    .politica_privacidad p {
+        font-size: 20px;
+        color: black;
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+
+    .politica_privacidad ul {
+        font-size: 20px;
+        color: black;
+        margin-left: 80px;
+        margin-right: 60px;
+    }
+
+    .politica_privacidad li {
+        margin: 10px;
+    }
 
 
 /*ESTILOS PARA LA PÁGINA DASHBOARD.HTML*/
