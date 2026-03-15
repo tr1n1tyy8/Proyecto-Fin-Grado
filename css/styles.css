@@ -122,20 +122,21 @@
 
     .navegacion-dashboard {
         margin-bottom: 5px;
-        flex: 1;
+        margin-left: 100px;
         display: flex;
-        justify-content: center;
-        gap: 30px;
     }
 
     .nav-item {
         font-size: 18px;
         color: black;
+        margin: 60px;
+        margin-left: 10px;
+        text-decoration: none;
         position: relative;
         display: inline-block;
-        cursor: pointer;
         transition: color 0.3s ease;
-        padding: 5px 0;
+        cursor: pointer;
+        padding: 0;
     }
 
     .nav-item:hover {
@@ -164,21 +165,32 @@
         margin-bottom: 5px;
     }
 
+    .cabecera .botones {
+        margin-left: auto;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+    }
 
-    .botones button {
+
+    .botones a {
         background-color: rgb(51, 90, 153);
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        width: 150px;
+        padding: 8px 20px;
         height: 40px;
+        display: inline-flex;
+        align-items: center;
         margin-bottom: 5px;
         margin: 10px;
         transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 16px;
     }
 
-    .cabecera button:hover {
+    .botones a:hover {
         box-shadow: 0 4px 8px rgb(170, 170, 170);
     }
 
@@ -343,8 +355,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-        flex-direction: column;
-    }
 
     .apartados_novedades h3 {
         color: rgb(58, 82, 121);
@@ -352,7 +362,6 @@
         margin-top: 20px;
         margin-left: 30px;
         font-size: 33px;
-        align-self: flex-start;
     }
 
     .contenido_noticia {
@@ -419,6 +428,195 @@
 
     .politica_privacidad li {
         margin: 10px;
+    }
+
+
+    /*ESTILOS PARA LA PÁGINA REGISTRO.HTML*/
+    .fondo {
+        width: 100%;
+        height: 90vh;
+        background-image: url('../images/background.png');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .formulario {
+        width: 1000px;
+        height: 600px;
+        background-color: white;
+        border-radius: 10px;
+        padding-bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 8px 10px rgb(173, 173, 175);
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .formulario.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .logo_formulario {
+        width: 210px;
+        height: 60px;
+        display: block;
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+
+    .contenedor {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contenedor h2 {
+        color: rgb(58, 82, 121);
+        margin-bottom: 40px;
+        margin-left: 30px;
+        font-size: 35px;
+    }
+
+    .contenedor p {
+        font-size: 14px;
+        color: black;
+        margin-left: 0;
+        margin-right: 0;
+        text-align: center;
+    }
+
+    .contenedor p a {
+        color: rgb(36, 64, 108);
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .contenedor p a:hover {
+        text-decoration: underline;
+    }
+
+    .contenedor form {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        gap: 20px;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    .contenedor form input {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: rgb(232, 232, 236);
+    }
+
+    .contenedor button {
+        background-color: rgb(51, 90, 153);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 150px;
+        height: 40px;
+        margin: 10px auto;
+        transition: all 0.3s ease;
+        font-size: 16px;
+    }
+
+    .contenedor button:hover {
+        box-shadow: 0 4px 8px rgb(170, 170, 170);
+    }
+
+    .situacion-laboral {
+        background-color: rgb(243, 244, 248);
+        border-radius: 10px;
+        padding: 10px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .situacion-laboral h3 {
+        color: rgb(36, 64, 108);
+        font-size: 25px;
+        text-align: left;
+        margin-bottom: 40px;
+    }
+
+    .situacion-laboral label {
+        display: block;
+        font-size: 16px;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    .situacion-laboral select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid rgb(200, 200, 205);
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    .situacion-laboral select:hover {
+        border-color: rgb(51, 90, 153);
+    }
+
+    .situacion-laboral select:focus {
+        outline: none;
+        border-color: rgb(51, 90, 153);
+        box-shadow: 0 0 5px rgb(51, 90, 153);
+    }
+
+    .btn-continuar {
+        background-color: rgb(51, 90, 153);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 150px;
+        height: 40px;
+        margin: 20px 0 0 auto;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        display: block;
+    }
+
+    .btn-continuar:hover {
+        box-shadow: 0 4px 8px rgb(170, 170, 170);
+    }
+        height: 40px;
+        width: 200px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 16px;
+        align-self: center;
+        margin-top: 30px;
+    }
+
+    .contenedor button:hover {
+        box-shadow: 0 4px 8px rgb(170, 170, 170);
     }
 
 

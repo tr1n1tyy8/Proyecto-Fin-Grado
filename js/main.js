@@ -13,9 +13,9 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Observar todos los apartados
+// Observar todos los apartados y formularios
 document.addEventListener('DOMContentLoaded', function() {
-    const apartados = document.querySelectorAll('[class^="apartado"]');
+    const apartados = document.querySelectorAll('[class^="apartado"], .formulario');
     apartados.forEach(apartado => {
         observer.observe(apartado);
     });
