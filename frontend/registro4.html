@@ -26,25 +26,30 @@
         <div class="formulario">
             <img src="../images/logo completo.png" class="logo_formulario">
             <div class="contenedor">
-                <h2>Crear una Cuenta</h2>
+                <h2 style="margin-bottom: 15px; margin-top: 0;">Crear una Cuenta</h2>
                 
-                <div class="situacion-laboral">
-                    <h3>Queremos conocerte</h3>
-                    <label for="situacion">¿Cuál es tu situación laboral?</label>
-                    <select id="situacion" name="situacion">
-                        <option value="">Selecciona una opción</option>
-                        <option value="empleado">Empleado/a por cuenta ajena</option>
-                        <option value="autonomo">Autónomo/a profesional independiente</option>
-                        <option value="desempleado">Desempleado/a</option>
-                        <option value="estudiante">Estudiante</option>
-                        <option value="jubilado">Jubilado/a</option>
-                        <option value="pensionista">Pensionista</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                    <button type="button" class="btn-continuar" onclick="window.location.href='registro2.html'">Continuar</button>
+                <div class="datos-personales">
+                    <h3>Para terminar...</h3>
+                    <form action="" method="post">
+                        <div class="form-columnas">
+                            <div class="form-columna">
+                                <label>Correo Electrónico</label>
+                                <input type="email" required>
+                                <label>Número de Teléfono</label>
+                                <input type="tel" required>
+                            </div>
+                            <div class="form-columna">
+                                <label>Contraseña</label>
+                                <input type="password" required>
+                                <label>Confirmar Contraseña</label>
+                                <input type="password" required>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn-continuar" onclick="window.location.href='dashboard.html'">Confirmar</button>
                 </div>
                 
-                <p>¿Ya tienes una cuenta? | <a href="login.html">Inicia sesión aquí</a></p>
+                <p style="margin-top: 0px;">¿Ya tienes una cuenta? | <a href="login.html">Inicia sesión aquí</a></p>
             </div>
         </div>
     </div>
