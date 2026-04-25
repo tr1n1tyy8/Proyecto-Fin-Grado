@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="shortcut icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Crear una Cuenta</title>
 </head>
 <body>
     <header class="cabecera">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion">
             <a href="index.html" class="nav-link">¿Quiénes Somos?</a>
@@ -21,27 +21,28 @@
             <a href="login.html">Iniciar sesión</a>
         </div>
     </header>
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/registro-api.js"></script>
     <div class="fondo">
         <div class="formulario">
-            <img src="../images/logo completo.png" class="logo_formulario">
+            <img src="/images/logo completo.png" class="logo_formulario">
             <div class="contenedor">
                 <h2>Crear una Cuenta</h2>
                 
                 <div class="situacion-laboral">
                     <h3>Queremos conocerte</h3>
-                    <label for="situacion">¿Cuál es tu situación laboral?</label>
-                    <select id="situacion" name="situacion">
+                    <label for="situacion_laboral">¿Cuál es tu situación laboral?</label>
+                    <select id="situacion_laboral" name="situacion_laboral" data-field="situacion_laboral">
                         <option value="">Selecciona una opción</option>
-                        <option value="empleado">Empleado/a por cuenta ajena</option>
-                        <option value="autonomo">Autónomo/a profesional independiente</option>
-                        <option value="desempleado">Desempleado/a</option>
-                        <option value="estudiante">Estudiante</option>
-                        <option value="jubilado">Jubilado/a</option>
-                        <option value="pensionista">Pensionista</option>
-                        <option value="otro">Otro</option>
+                        <option value="Empleado/a por cuenta ajena">Empleado/a por cuenta ajena</option>
+                        <option value="Autónomo/a profesional independiente">Autónomo/a profesional independiente</option>
+                        <option value="Desempleado/a">Desempleado/a</option>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Jubilado/a">Jubilado/a</option>
+                        <option value="Pensionista">Pensionista</option>
+                        <option value="Otro">Otro</option>
                     </select>
-                    <button type="button" class="btn-continuar" onclick="window.location.href='registro2.html'">Continuar</button>
+                    <button type="button" class="btn-continuar" onclick="guardarSituacionLaboral()">Continuar</button>
                 </div>
                 
                 <p>¿Ya tienes una cuenta? | <a href="login.html">Inicia sesión aquí</a></p>

@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="shortcut icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Sobre Nosotros</title>
 </head>
 <body>
     <header class="cabecera-dashboard">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion-dashboard">
             <a href="dashboard.html" class="nav-item">Tus movimientos</a>
@@ -17,19 +17,21 @@
             <a href="informacion.html" class="nav-item">Información de la cuenta</a>
         </div>
         <div class="botones">
-            <a href="login.html">Cambiar cuenta</a>
-            <a href="login.html">Cerrar sesión</a>
+            <a href="login.html" onclick="event.preventDefault(); window.location.href='login.html';">Cambiar cuenta</a>
+            <a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a>
         </div>
     </header>
     <main class="contenido">
         <div class="saldo">
-            <h2>Tu cuenta</h2>
-            <p>
-                2000€ en tu cuenta de ahorros
-            </p>
+            <h2>Hola</h2>
+            <p>Cargando saldo...</p>
+        </div>
+        <div class="informacion-usuario">
+            <!-- Se cargará con los datos del usuario -->
         </div>
     </main>
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/login-api.js"></script>
     <footer class="pie">
         <p>© 2026 Capitalia. Todos los derechos reservados.</p>
         <p><a href="politicas_privacidad.html">Política de Privacidad</a></p>

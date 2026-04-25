@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="shortcut icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Crear una Cuenta</title>
 </head>
 <body>
     <header class="cabecera">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion">
             <a href="index.html" class="nav-link">¿Quiénes Somos?</a>
@@ -21,36 +21,37 @@
             <a href="login.html">Iniciar sesión</a>
         </div>
     </header>
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/registro-api.js"></script>
     <div class="fondo">
         <div class="formulario">
-            <img src="../images/logo completo.png" class="logo_formulario">
+            <img src="/images/logo completo.png" class="logo_formulario">
             <div class="contenedor">
                 <h2 style="margin-bottom: 15px; margin-top: 0;">Crear una Cuenta</h2>
                 
                 <div class="datos-personales">
                     <h3>Tus datos personales</h3>
-                    <form action="" method="post">
+                    <form id="formPersonales" action="" method="post">
                         <div class="form-columnas">
                             <div class="form-columna">
                                 <label>Nombre</label>
-                                <input type="text" required>
+                                <input type="text" id="nombre" name="nombre" data-field="nombre" required>
                                 <label>Apellidos</label>
-                                <input type="text" required>
+                                <input type="text" id="apellidos" name="apellidos" data-field="apellidos" required>
                                 <label>Fecha de Nacimiento</label>
-                                <input type="date" required>
+                                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" data-field="fecha_nacimiento" required>
                             </div>
                             <div class="form-columna">
                                 <label>NIF/NIE</label>
-                                <input type="text" required>
+                                <input type="text" id="dni" name="dni" data-field="dni" required>
                                 <label>País de residencia</label>
-                                <input type="text" required>
+                                <input type="text" id="pais_residencia" name="pais_residencia" data-field="pais_residencia" required>
                                 <label>Nacionalidad</label>
-                                <input type="text" required>
+                                <input type="text" id="nacionalidad" name="nacionalidad" data-field="nacionalidad" required>
                             </div>
                         </div>
                     </form>
-                    <button type="button" class="btn-continuar" onclick="window.location.href='registro3.html'">Continuar</button>
+                    <button type="button" class="btn-continuar" onclick="guardarPersonales()">Continuar</button>
                 </div>
                 
                 <p style="margin-top: 0px;">¿Ya tienes una cuenta? | <a href="login.html">Inicia sesión aquí</a></p>

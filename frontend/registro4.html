@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="shortcut icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Crear una Cuenta</title>
 </head>
 <body>
     <header class="cabecera">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion">
             <a href="index.html" class="nav-link">¿Quiénes Somos?</a>
@@ -21,32 +21,33 @@
             <a href="login.html">Iniciar sesión</a>
         </div>
     </header>
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/registro-api.js"></script>
     <div class="fondo">
         <div class="formulario">
-            <img src="../images/logo completo.png" class="logo_formulario">
+            <img src="/images/logo completo.png" class="logo_formulario">
             <div class="contenedor">
                 <h2 style="margin-bottom: 15px; margin-top: 0;">Crear una Cuenta</h2>
                 
                 <div class="datos-personales">
                     <h3>Para terminar...</h3>
-                    <form action="" method="post">
+                    <form id="formFinal" action="" method="post">
                         <div class="form-columnas">
                             <div class="form-columna">
                                 <label>Correo Electrónico</label>
-                                <input type="email" required>
+                                <input type="email" id="email" name="email" data-field="email" required>
                                 <label>Número de Teléfono</label>
-                                <input type="tel" required>
+                                <input type="tel" id="telefono" name="telefono" data-field="telefono" required>
                             </div>
                             <div class="form-columna">
                                 <label>Contraseña</label>
-                                <input type="password" required>
+                                <input type="password" id="password" name="password" data-field="password" required>
                                 <label>Confirmar Contraseña</label>
-                                <input type="password" required>
+                                <input type="password" id="password_confirm" name="password_confirm" data-field="password_confirm" required>
                             </div>
                         </div>
                     </form>
-                    <button type="button" class="btn-continuar" onclick="window.location.href='dashboard.html'">Confirmar</button>
+                    <button type="button" class="btn-continuar" onclick="enviarRegistro()">Confirmar</button>
                 </div>
                 
                 <p style="margin-top: 0px;">¿Ya tienes una cuenta? | <a href="login.html">Inicia sesión aquí</a></p>

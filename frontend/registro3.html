@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="shortcut icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Crear una Cuenta</title>
 </head>
 <body>
     <header class="cabecera">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion">
             <a href="index.html" class="nav-link">¿Quiénes Somos?</a>
@@ -21,32 +21,33 @@
             <a href="login.html">Iniciar sesión</a>
         </div>
     </header>
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/registro-api.js"></script>
     <div class="fondo">
         <div class="formulario">
-            <img src="../images/logo completo.png" class="logo_formulario">
+            <img src="/images/logo completo.png" class="logo_formulario">
             <div class="contenedor">
                 <h2 style="margin-bottom: 15px; margin-top: 0;">Crear una Cuenta</h2>
                 
                 <div class="datos-personales">
                     <h3>Tu residencia</h3>
-                    <form action="" method="post">
+                    <form id="formResidencia" action="" method="post">
                         <div class="form-columnas">
                             <div class="form-columna">
                                 <label>Calle de residencia</label>
-                                <input type="text" required>
+                                <input type="text" id="direccion" name="direccion" data-field="direccion" required>
                                 <label>Población</label>
-                                <input type="text" required>
+                                <input type="text" id="ciudad" name="ciudad" data-field="ciudad" required>
                             </div>
                             <div class="form-columna">
                                 <label>Provincia</label>
-                                <input type="text" required>
+                                <input type="text" id="provincia" name="provincia" data-field="provincia" required>
                                 <label>Código Postal</label>
-                                <input type="text" required>
+                                <input type="text" id="codigo_postal" name="codigo_postal" data-field="codigo_postal" required>
                             </div>
                         </div>
                     </form>
-                    <button type="button" class="btn-continuar" onclick="window.location.href='registro4.html'">Continuar</button>
+                    <button type="button" class="btn-continuar" onclick="guardarResidencia()">Continuar</button>
                 </div>
                 
                 <p style="margin-top: 0px;">¿Ya tienes una cuenta? | <a href="login.html">Inicia sesión aquí</a></p>

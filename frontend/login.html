@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="shortcut icon" href="/images/logo.png" />
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Iniciar Sesión</title>
 </head>
 <body>
     <header class="cabecera">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion">
             <a href="index.html" class="nav-link">¿Quiénes Somos?</a>
@@ -21,17 +21,18 @@
             <a href="login.html">Iniciar sesión</a>
         </div>
     </header>
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/login-api.js"></script>
     <div class="fondo">
         <div class="formulario">
-            <img src="../images/logo completo.png" class="logo_formulario">
+            <img src="/images/logo completo.png" class="logo_formulario">
             <div class="contenedor">
                 <h2>Iniciar Sesión</h2>
                 <form action="" method="post">
                     <label>Correo Electrónico</label>
-                    <input type="text" required>
+                    <input type="email" id="email" name="email" required>
                     <label>Contraseña</label>
-                    <input type="password" required>
+                    <input type="password" id="password" name="password" required>
                     <button type="submit">Iniciar sesión</button>
                 </form>
                 <p>¿No tienes una cuenta? | <a href="registro.html">Regístrate aquí</a></p>
