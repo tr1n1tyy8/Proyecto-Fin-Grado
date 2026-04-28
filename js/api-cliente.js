@@ -104,7 +104,7 @@ async function iniciarSesion(email, password) {
 
 function cerrarSesion() {
   eliminarToken();
-  window.location.href = "login.html";
+  window.location.href = "/login";
 }
 
 // VERIFICAR SI ESTÁ AUTENTICADO

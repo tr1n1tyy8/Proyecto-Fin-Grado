@@ -1,4 +1,7 @@
 // Intersection Observer para detectar cuando los apartados entran en vista
+
+const API_URL = "http://127.0.0.1:8000";
+
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'

@@ -105,6 +105,30 @@ async def index():
         return FileResponse(index_file, media_type="text/html")
     return {"error": "index.html no encontrado"}
 
+@app.get("/compromiso_social")
+async def compromiso_social():
+    """Servir página de compromiso social"""
+    archivo = FRONTEND_DIR / "compromiso_social.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "compromiso_social.html no encontrado"}
+
+@app.get("/novedades")
+async def novedades():
+    """Servir página de novedades"""
+    archivo = FRONTEND_DIR / "novedades.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "novedades.html no encontrado"}
+
+@app.get("/mas_informacion")
+async def mas_informacion():
+    """Servir página de más información"""
+    archivo = FRONTEND_DIR / "mas_informacion.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "mas_informacion.html no encontrado"}
+
 @app.get("/registro")
 async def registro():
     """Servir página de registro"""
@@ -137,7 +161,7 @@ async def registro4():
         return FileResponse(archivo, media_type="text/html")
     return {"error": "registro4.html no encontrado"}
 
-@app.get("/login")
+@app.get("/acceso")
 async def login_page():
     """Servir página de login"""
     archivo = FRONTEND_DIR / "login.html"
@@ -152,6 +176,46 @@ async def dashboard():
     if archivo.exists():
         return FileResponse(archivo, media_type="text/html")
     return {"error": "dashboard.html no encontrado"}
+
+@app.get("/bizum")
+async def bizum_page():
+    """Servir página de bizum"""
+    archivo = FRONTEND_DIR / "bizum.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "bizum.html no encontrado"}
+
+@app.get("/avisos")
+async def avisos_page():
+    """Servir página de avisos"""
+    archivo = FRONTEND_DIR / "avisos.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "avisos.html no encontrado"}
+
+@app.get("/informacion")
+async def informacion_page():
+    """Servir página de información"""
+    archivo = FRONTEND_DIR / "informacion.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "informacion.html no encontrado"}
+
+@app.get("/politicas_privacidad")
+async def politicas_privacidad_page():
+    """Servir página de políticas de privacidad"""
+    archivo = FRONTEND_DIR / "politicas_privacidad.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "politicas_privacidad.html no encontrado"}
+
+@app.get("/condiciones_uso")
+async def condiciones_uso_page():
+    """Servir página de condiciones de uso"""
+    archivo = FRONTEND_DIR / "condiciones_uso.html"
+    if archivo.exists():
+        return FileResponse(archivo, media_type="text/html")
+    return {"error": "condiciones_uso.html no encontrado"}
 
 # ============================================================================
 # RUTA RAÍZ (Documentación)

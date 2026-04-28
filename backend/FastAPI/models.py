@@ -37,6 +37,7 @@ class Cliente(Base):
     situacion_laboral = Column(String(50), nullable=False)
     saldo = Column(Float, default=0.00, nullable=False)
     ultimo_inicio_sesion = Column(DateTime, default=datetime.utcnow, nullable=False)
+    password = Column(String(255), nullable=False)
     
     # RELACIÓN CON TRANSACCIONES
     # backreference = permite acceder a las transacciones del cliente directamente

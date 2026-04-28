@@ -46,7 +46,7 @@ async function iniciarSesion(event) {
             
             // 2. Ir al dashboard
             alert('✅ ¡Sesión iniciada! Bienvenido/a');
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
         } else {
             // ❌ Credenciales inválidas
             alert('❌ Email o contraseña incorrectos');
@@ -77,7 +77,7 @@ function cerrarSesion() {
     alert('Sesión cerrada. Hasta pronto!');
     
     // Ir a login
-    window.location.href = 'login.html';
+    window.location.href = '/acceso';
 }
 
 // ============================================================================
@@ -94,7 +94,7 @@ async function cargarDashboard() {
     // Verificar que está autenticado
     if (!estaAutenticado()) {
         alert('⚠️ Necesitas iniciar sesión primero');
-        window.location.href = 'login.html';
+        window.location.href = '/acceso';
         return;
     }
     
@@ -125,7 +125,7 @@ async function cargarDashboard() {
             alert('⚠️ Tu sesión ha expirado. Inicia sesión de nuevo');
             localStorage.removeItem('token');
             localStorage.removeItem('email');
-            window.location.href = 'login.html';
+            window.location.href = '/acceso';
         } else {
             throw new Error('Error al cargar datos');
         }

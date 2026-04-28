@@ -27,6 +27,7 @@ class ClienteRegistro(BaseModel):
     codigo_postal: str
     pais_residencia: str
     situacion_laboral: str
+    password: str
 
 class ClienteLogin(BaseModel):
     """Datos para login (POST /login) - Solo email y contraseña"""
