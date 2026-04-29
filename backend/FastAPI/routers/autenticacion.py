@@ -102,10 +102,8 @@ async def register(
         raise HTTPException(status_code=400, detail="Este DNI ya está registrado")
 
     # ✓ PROCESAR FECHA
-    try:
-        fecha_nac = datetime.strptime(client.fecha_nacimiento, "%Y-%m-%d")
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Formato de fecha inválido (YYYY-MM-DD)")
+    # Pydantic ya convierte el string a date, solo necesitamos convertirlo a datetime
+    fecha_nac = datetime.combine(client.fecha_nacimiento, datetime.min.time())
     
     # ✓ CREAR CLIENTE CON CONTRASEÑA HASHEADA
     nuevo_cliente = Cliente(
@@ -124,7 +122,7 @@ async def register(
         situacion_laboral=client.situacion_laboral,
         saldo=0.00,
         # AQUÍ ESTÁ LA MAGIA: Hasheamos la contraseña que viene del Pydantic
-        hashed_password=hash_password(client.password) 
+        password=hash_password(client.password) 
     )
     
     db.add(nuevo_cliente)
@@ -142,7 +140,7 @@ async def login(
     user = db.query(Cliente).filter(Cliente.email == credentials.username).first()
     
     # 2. Verificar usuario y CONTRASEÑA
-    if not user or not verify_password(credentials.password, user.hashed_password):
+    if not user or not verify_password(credentials.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Email o contraseña incorrectos",

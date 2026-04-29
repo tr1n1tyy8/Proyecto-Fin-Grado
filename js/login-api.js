@@ -3,8 +3,7 @@
 // ============================================================================
 // Maneja todo lo relacionado con la autenticación del usuario
 // ============================================================================
-
-const API_URL = 'http://localhost:8000';
+// API_URL ya está definido en main.js, no lo redeclaramos aquí
 
 // ============================================================================
 // FUNCIÓN: INICIAR SESIÓN (login.html)
@@ -19,7 +18,7 @@ async function iniciarSesion(event) {
     // Validar que fueron rellenados
     if (!email || !password) {
         alert('⚠️ Por favor, rellena email y contraseña');
-        return;
+        return false;
     }
     
     console.log('📤 Intentando login con:', email);
@@ -45,7 +44,7 @@ async function iniciarSesion(event) {
             localStorage.setItem('email', email);
             
             // 2. Ir al dashboard
-            alert('✅ ¡Sesión iniciada! Bienvenido/a');
+            console.log('✅ Redirigiendo al dashboard...');
             window.location.href = '/dashboard';
         } else {
             // ❌ Credenciales inválidas
@@ -57,6 +56,8 @@ async function iniciarSesion(event) {
         alert('❌ Error de conexión: ' + error.message);
         console.error('Error:', error);
     }
+    
+    return false;
 }
 
 // ============================================================================
@@ -167,46 +168,31 @@ function actualizarDashboard(usuario) {
 // ============================================================================
 // CUANDO CARGA LA PÁGINA
 // ============================================================================
+
+console.log('📋 Script login-api.js cargado');
+
+// Usar delegación de eventos - capturar TODOS los submits de formularios
+document.addEventListener('submit', function(e) {
+    // Verificar si estamos en /acceso
+    if (!window.location.href.includes('/acceso')) {
+        return; // No es la página de login
+    }
+    
+    console.log('🚀 Submit de formulario detectado en /acceso');
+    e.preventDefault(); // Prevenir comportamiento por defecto
+    
+    // Llamar a iniciarSesion
+    iniciarSesion(e);
+}, true); // Usar captura (true) para capturar en la fase de captura
+
+// Cargar dashboard cuando sea necesario
 window.addEventListener('DOMContentLoaded', function() {
-    // Si estamos en dashboard.html
-    if (window.location.href.includes('dashboard.html')) {
+    console.log('📋 DOMContentLoaded disparado');
+    
+    if (window.location.href.includes('/dashboard')) {
+        console.log('📊 Cargando datos del dashboard...');
         cargarDashboard();
     }
-    
-    // Si estamos en login.html, conectar el formulario
-    if (window.location.href.includes('login.html')) {
-        const formulario = document.querySelector('form');
-        if (formulario) {
-            // Buscar los inputs por placeholder o type
-            const inputs = document.querySelectorAll('input');
-            
-            // Darles IDs si no los tienen
-            if (inputs[0]) {
-                inputs[0].id = 'email';
-                inputs[0].name = 'email';
-            }
-            if (inputs[1]) {
-                inputs[1].id = 'password';
-                inputs[1].name = 'password';
-            }
-            
-            // Conectar el formulario al evento de envío
-            formulario.addEventListener('submit', iniciarSesion);
-        }
-    }
-    
-    // Conectar botones de cerrar sesión (pueden estar en varios sitios)
-    document.querySelectorAll('a[href="login.html"]').forEach(link => {
-        // Si el texto del link contiene "Cerrar" o "logout", hacerlo un botón de logout
-        if (link.textContent.toLowerCase().includes('cerrar') || 
-            link.textContent.toLowerCase().includes('logout')) {
-            link.href = '#';
-            link.onclick = function(e) {
-                e.preventDefault();
-                cerrarSesion();
-            };
-        }
-    });
 });
 
 // ============================================================================

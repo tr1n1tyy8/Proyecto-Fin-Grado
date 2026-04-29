@@ -6,7 +6,7 @@
 # ============================================================================
 
 from pydantic import BaseModel, EmailStr, Field
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 
 # ==================== SCHEMAS DE CLIENTE ====================
@@ -15,7 +15,7 @@ class ClienteRegistro(BaseModel):
     """Datos requeridos para registrar un nuevo cliente"""
     nombre: str
     apellidos: str
-    fecha_nacimiento: str
+    fecha_nacimiento: date
     dni: str
     telefono: str
     email: EmailStr
@@ -27,7 +27,6 @@ class ClienteRegistro(BaseModel):
     codigo_postal: str
     pais_residencia: str
     situacion_laboral: str
-    password: str
 
 class ClienteLogin(BaseModel):
     """Datos para login (POST /login) - Solo email y contraseña"""

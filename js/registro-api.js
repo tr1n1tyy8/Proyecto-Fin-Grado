@@ -7,9 +7,6 @@
 // 3. Enviar todo a la API cuando das a "Confirmar"
 // ============================================================================
 
-// URL de la API (donde está corriendo el backend)
-const API_URL = 'http://localhost:8000';
-
 // ============================================================================
 // PASO 1: GUARDAR SITUACIÓN LABORAL (Página 1)
 // ============================================================================
@@ -155,7 +152,7 @@ async function enviarRegistro() {
     
     try {
         // Enviar POST a /register
-        const respuesta = await fetch(API_URL + '/register', {
+        const respuesta = await fetch(API_URL + '/registro', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
