@@ -64,11 +64,14 @@ class TransaccionBizum(BaseModel):
     
     Validaciones:
     - cantidad > 0 (no se puede enviar dinero negativo)
+    - cantidad <= 500 (máximo por transferencia)
     - concepto opcional (por qué se envía el dinero)
     - numero_receptor: número de teléfono del receptor (para identificarlo)
+    - nombre_receptor: nombre del receptor (para verificar que es correcto)
     """
     cantidad: float = Field(..., gt=0, description="Cantidad a transferir (mayor que 0)")
     numero_receptor: str = Field(..., description="Teléfono del receptor")
+    nombre_receptor: str = Field(..., min_length=1, description="Nombre del receptor (para verificar)")
     concepto: Optional[str] = Field(None, max_length=255, description="Motivo del Bizum (opcional)")
 
 class TransaccionResponse(BaseModel):
@@ -79,6 +82,9 @@ class TransaccionResponse(BaseModel):
     cantidad: float
     concepto: Optional[str]
     fecha: datetime
+    emisor: Optional[str] = None  # Email del emisor
+    receptor: Optional[str] = None  # Email del receptor
+    nombre_receptor: Optional[str] = None  # Nombre del receptor (si está disponible)
     
     class Config:
         from_attributes = True

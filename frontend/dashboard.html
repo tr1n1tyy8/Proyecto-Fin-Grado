@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/images/logo.png" />
     <link rel="stylesheet" href="/css/styles.css">
-    <title>Sobre Nosotros</title>
+    <title>Dashboard - Capitalia</title>
 </head>
 <body>
     <header class="cabecera-dashboard">
@@ -23,14 +23,17 @@
     </header>
     <main class="contenido">
         <div class="saldo">
-            <h2>Tu cuenta</h2>
-            <p>
-                2000€ en tu cuenta de ahorros
-            </p>
+            <h2 id="titulo-bienvenida">Cargando...</h2>
+            <p class="saldo-monto">Cargando saldo...</p>
+        </div>
+
+        <div class="historial-transacciones">
+            <p style="text-align: center; color: #999;">Cargando transacciones...</p>
         </div>
     </main>
     <script src="/js/main.js"></script>
     <script src="/js/login-api.js"></script>
+    <script src="/js/dashboard-transacciones.js"></script>
     <footer class="pie">
         <p>© 2026 Capitalia. Todos los derechos reservados.</p>
         <p><a href="/politicas_privacidad">Política de Privacidad</a></p>

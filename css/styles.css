@@ -523,64 +523,6 @@
         box-shadow: 0 4px 12px rgb(170, 170, 170);
         transform: scale(1.02);
     }
-    /*
-    .contacto {
-        width: 100%;
-        height: 100%;
-        padding: 30px;
-        padding-top: 1px;
-        background-color: rgb(255, 255, 255);
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-
-    .contacto.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .contacto h3 {
-        color: rgb(58, 82, 121);
-        margin-bottom: 20px;
-        margin-top: 20px;
-        margin-left: 30px;
-        font-size: 33px;
-    }
-
-    .seccion {
-        background-color: white;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        
-    }
-
-    .seccion h3 {
-        color: rgb(36, 64, 108);
-        align-self: center;
-        margin-bottom: 10px;
-        margin-top: 30px;
-        font-size: 33px;
-    }
-
-    .seccion p {
-        font-size: 18px;
-        margin: 5px;
-        align-content: center;
-    }
-
-    .seccion details {
-        font-size: 18px;
-        margin: 5px;
-    }
-
-    */
 
 
 
@@ -853,4 +795,356 @@
         margin-top: 20px;
         font-size: 50px;
     }
-}
+
+/* ============================================================================ */
+/* ESTILOS PARA LA PÁGINA BIZUM.HTML */
+/* ============================================================================ */
+
+    .contenido-bizum {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+    }
+
+    .formulario-bizum {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 8px 10px rgb(173, 173, 175);
+        padding: 50px;
+        width: 900px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .formulario-bizum h2 {
+        color: rgb(58, 82, 121);
+        text-align: center;
+        margin: 0 0 30px 0;
+        font-size: 35px;
+        width: 100%;
+    }
+
+    #formulario-bizum {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        width: 100%;
+    }
+
+    .formulario-bizum .grupo-input {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .formulario-bizum label {
+        color: black;
+        font-weight: normal;
+        font-size: 18px;
+    }
+
+    .formulario-bizum input,
+    .formulario-bizum textarea {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: rgb(232, 232, 236);
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .formulario-bizum input:focus,
+    .formulario-bizum textarea:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgb(51, 90, 153);
+    }
+
+    .formulario-bizum input:hover,
+    .formulario-bizum textarea:hover {
+        box-shadow: 0 0 5px rgba(51, 90, 153, 0.2);
+    }
+
+    .formulario-bizum textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .grupo-cantidad {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .grupo-cantidad input {
+        flex: 1;
+    }
+
+    .grupo-cantidad .simbolo {
+        font-size: 18px;
+        color: rgb(51, 90, 153);
+        font-weight: bold;
+    }
+
+    .info-transferencia {
+        background-color: rgb(232, 232, 236);
+        border-left: 4px solid rgb(51, 90, 153);
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 13px;
+        color: #666;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .info-transferencia ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+
+    .info-transferencia li {
+        margin: 5px 0;
+    }
+
+    #formulario-bizum button[type="submit"] {
+        grid-column: 1 / -1;
+    }
+
+    .formulario-bizum button {
+        background-color: rgb(51, 90, 153);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 150px;
+        height: 40px;
+        margin: 10px auto;
+        transition: all 0.3s ease;
+        font-size: 16px;
+    }
+
+    .formulario-bizum button:hover {
+        box-shadow: 0 4px 8px rgb(170, 170, 170);
+    }
+
+    .formulario-bizum button:active {
+        transform: translateY(0);
+    }
+
+    .formulario-bizum button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .mensaje-exito {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 5px;
+        border-left: 4px solid #28a745;
+        margin-top: 20px;
+        display: none;
+    }
+
+    .mensaje-exito.visible {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .confirmar-transferencia {
+        background-color: #f8f9fa;
+        border: 2px dashed rgb(51, 90, 153);
+        padding: 15px;
+        border-radius: 5px;
+        grid-column: 1 / -1;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .confirmar-transferencia.visible {
+        display: block;
+    }
+
+    .confirmar-transferencia p {
+        margin: 5px 0;
+        color: #333;
+    }
+
+    .confirmar-transferencia strong {
+        color: rgb(51, 90, 153);
+    }
+
+    .botones-confirmacion {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .botones-confirmacion button {
+        flex: 1;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .btn-confirmar {
+        background-color: #28a745;
+    }
+
+    .btn-confirmar:hover {
+        background-color: #218838;
+    }
+
+    .btn-cancelar {
+        background-color: #dc3545;
+    }
+
+    .btn-cancelar:hover {
+        background-color: #c82333;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+/* ============================================================================ */
+/* ESTILOS PARA LA PÁGINA DASHBOARD.HTML - TRANSACCIONES */
+/* ============================================================================ */
+
+    .contenido {
+        flex: 1;
+        padding: 40px 80px;
+    }
+
+    .saldo {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .saldo h2 {
+        color: rgb(58, 82, 121);
+        margin: 0 0 20px 0;
+        font-size: 35px;
+        text-align: center;
+    }
+
+    .saldo-monto {
+        margin: 0;
+        font-size: 14px;
+        color: black;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    .historial-transacciones {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .historial-transacciones h3 {
+        color: rgb(51, 90, 153);
+        margin: 0 0 20px 0;
+        font-size: 20px;
+        border-bottom: 2px solid rgb(232, 232, 236);
+        padding-bottom: 15px;
+    }
+
+    .lista-transacciones {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .transaccion-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: rgb(245, 245, 248);
+        border-left: 4px solid rgb(51, 90, 153);
+        transition: all 0.3s ease;
+    }
+
+    .transaccion-item:hover {
+        background-color: rgb(235, 235, 242);
+        transform: translateX(5px);
+    }
+
+    .transaccion-item.transaccion-envio {
+        border-left-color: #ff6b6b;
+    }
+
+    .transaccion-item.transaccion-recepcion {
+        border-left-color: #28a745;
+    }
+
+    .transaccion-icono {
+        font-size: 24px;
+        margin-right: 15px;
+        min-width: 30px;
+        text-align: center;
+    }
+
+    .transaccion-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .transaccion-concepto {
+        font-weight: bold;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .transaccion-fecha {
+        font-size: 12px;
+        color: #999;
+    }
+
+    .transaccion-cantidad {
+        font-size: 16px;
+        font-weight: bold;
+        min-width: 100px;
+        text-align: right;
+    }
+
+    .transaccion-cantidad[data-tipo="envio"] {
+        color: #ff6b6b;
+    }
+
+    .transaccion-cantidad[data-tipo="recepcion"] {
+        color: #28a745;
+    }
+
+    @media (max-width: 768px) {
+        .contenido {
+            padding: 20px;
+        }
+
+        .transaccion-item {
+            flex-wrap: wrap;
+        }
+
+        .transaccion-cantidad {
+            width: 100%;
+            text-align: right;
+            margin-top: 10px;
+        }
+    }}

@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="../images/logo.png" />
+    <link rel="shortcut icon" href="/images/logo.png" />
     <link rel="stylesheet" href="/css/styles.css">
-    <title>Sobre Nosotros</title>
+    <title>Bizum - Capitalia</title>
 </head>
 <body>
     <header class="cabecera-dashboard">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion-dashboard">
             <a href="/dashboard" class="nav-item">Tus movimientos</a>
@@ -21,13 +21,72 @@
             <a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a>
         </div>  
     </header>
-    <main class="contenido">
+    
+    <main class="contenido-bizum">
+        <div class="formulario-bizum">
+            <h2>Realizar Bizum</h2>
+            
+            <div class="info-transferencia">
+                <strong>ℹ️ Información importante:</strong>
+                <ul>
+                    <li>Máximo 500€ por transferencia</li>
+                    <li>Necesitas saldo disponible</li>
+                    <li>Verifica el nombre del receptor</li>
+                    <li>Las transferencias son inmediatas</li>
+                </ul>
+            </div>
+
+            <form id="formulario-bizum">
+                <div class="grupo-input">
+                    <label for="numero_receptor">Teléfono del receptor</label>
+                    <input type="tel" id="numero_receptor" placeholder="Ej: 612345678" required>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="nombre_receptor">Nombre del receptor</label>
+                    <input type="text" id="nombre_receptor" placeholder="Nombre completo" required>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="cantidad">Cantidad a enviar</label>
+                    <div class="grupo-cantidad">
+                        <input type="number" id="cantidad" placeholder="0,00" min="0.01" max="500" step="0.01" required>
+                        <span class="simbolo">€</span>
+                    </div>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="concepto">Concepto (opcional)</label>
+                    <textarea id="concepto" placeholder="Motivo de la transferencia..."></textarea>
+                </div>
+
+                <div class="confirmar-transferencia" id="confirmar-transferencia">
+                    <p><strong>Confirma los datos:</strong></p>
+                    <p>Receptor: <strong id="confirmar-nombre">-</strong></p>
+                    <p>Teléfono: <strong id="confirmar-telefono">-</strong></p>
+                    <p>Cantidad: <strong id="confirmar-cantidad">-</strong> €</p>
+                    <p>Concepto: <strong id="confirmar-concepto">-</strong></p>
+                    <div class="botones-confirmacion">
+                        <button type="button" class="btn-confirmar" onclick="confirmarTransferencia()">✓ Confirmar</button>
+                        <button type="button" class="btn-cancelar" onclick="cancelarTransferencia()">✗ Cancelar</button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-enviar">Enviar Bizum</button>
+            </form>
+
+            <div class="mensaje-exito" id="mensaje-exito"></div>
+        </div>
     </main>
-    <script src="/js/main.js"></script>
+
     <footer class="pie">
         <p>© 2026 Capitalia. Todos los derechos reservados.</p>
-        <p><a href="/politicas_privacidad" class="nav-item">Política de Privacidad</a></p>
-        <p><a href="/condiciones_uso" class="nav-item">Condiciones de Uso</a></p>
+        <p><a href="/politicas_privacidad">Política de Privacidad</a></p>
+        <p><a href="/condiciones_uso">Condiciones de Uso</a></p>
     </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/login-api.js"></script>
+    <script src="/js/bizum-api.js"></script>
 </body>
 </html>

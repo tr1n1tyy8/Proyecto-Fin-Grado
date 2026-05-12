@@ -157,6 +157,23 @@ async def get_current_user_info(user: Cliente = Depends(get_current_user)):
     return user
 
 
+@router.get("/usuarios/{email}", response_model=ClienteResponse)
+async def get_usuario_por_email(
+    email: str,
+    user: Cliente = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Obtiene los datos de un usuario por su email (requiere estar autenticado)"""
+    # Solo permite obtener datos del usuario autenticado
+    if user.email != email:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permiso para acceder a otros usuarios"
+        )
+    
+    return user
+
+
 
 
 

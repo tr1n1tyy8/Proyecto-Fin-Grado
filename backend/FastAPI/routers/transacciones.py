@@ -73,6 +73,13 @@ async def transferir_bizum(
             detail="La cantidad debe ser mayor a 0"
         )
     
+    # ✓ VALIDACIÓN 2.5: Máximo 500€ por transferencia
+    if transferencia.cantidad > 500:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El máximo por transferencia es de 500€"
+        )
+    
     # ✓ VALIDACIÓN 3: Saldo suficiente
     if usuario_autenticado.saldo < transferencia.cantidad:
         raise HTTPException(
@@ -89,6 +96,14 @@ async def transferir_bizum(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Receptor no encontrado. Verifica el número de teléfono"
+        )
+    
+    # ✓ VALIDACIÓN 5: Verificar que el nombre coincide
+    # Comparar el nombre (insensible a mayúsculas/minúsculas)
+    if receptor.nombre.lower() != transferencia.nombre_receptor.lower():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"El nombre no coincide. El usuario con ese teléfono es: {receptor.nombre}"
         )
     
     # ============================================================
@@ -201,3 +216,49 @@ async def obtener_historial(
             TransaccionResponse.from_orm(t) for t in transacciones_recibidas
         ]
     )
+
+
+# ============================================================================
+# RUTA: GET /ultimas - OBTENER LAS 5 ÚLTIMAS TRANSACCIONES
+# ============================================================================
+
+@router.get("/ultimas", response_model=list[TransaccionResponse])
+async def obtener_ultimas_transacciones(
+    usuario_autenticado: Cliente = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    GET /transacciones/ultimas - Obtener las 5 últimas transacciones del usuario.
+    
+    ⚠️ PROTEGIDA: Requiere JWT token
+    
+    Devuelve las 5 transacciones más recientes (enviadas o recibidas).
+    
+    Returns:
+        Lista de hasta 5 TransaccionResponse ordenadas por fecha (más reciente primero)
+    """
+    
+    usuario_id = usuario_autenticado.id
+    
+    # Obtener todas las transacciones del usuario (enviadas + recibidas) ordenadas por fecha
+    transacciones = db.query(Transaccion).filter(
+        (Transaccion.id_emisor == usuario_id) | (Transaccion.id_receptor == usuario_id)
+    ).order_by(Transaccion.fecha.desc()).limit(5).all()
+    
+    # Convertir a schemas de respuesta con información adicional
+    resultado = []
+    for t in transacciones:
+        trans_dict = {
+            "id": t.id,
+            "id_emisor": t.id_emisor,
+            "id_receptor": t.id_receptor,
+            "cantidad": t.cantidad,
+            "concepto": t.concepto,
+            "fecha": t.fecha,
+            "emisor": t.emisor.email if t.emisor else None,
+            "receptor": t.receptor.email if t.receptor else None,
+            "nombre_receptor": t.receptor.nombre if t.receptor else None
+        }
+        resultado.append(TransaccionResponse(**trans_dict))
+    
+    return resultado
