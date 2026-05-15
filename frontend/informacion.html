@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="cabecera-dashboard">
-        <img src="../images/logo.png">
+        <img src="/images/logo.png">
         <h1>Capitalia</h1>
         <div class="navegacion-dashboard">
             <a href="/dashboard" class="nav-item">Tus movimientos</a>
@@ -19,9 +19,23 @@
         <div class="botones">
             <a href="/acceso" onclick="event.preventDefault(); window.location.href='/acceso';">Cambiar cuenta</a>
             <a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a>
-        </div>
+        </div> 
     </header>
+    
+    <main class="contenido-informacion">
+        <div class="formulario-informacion">
+            <h2>Tu Información</h2>
+            
+            <div id="datos-usuario">
+                <p style="text-align: center; color: #999;">Cargando información...</p>
+            </div>
+        </div>
+    </main>
+    
     <script src="/js/main.js"></script>
+    <script src="/js/login-api.js"></script>
+    <script src="/js/informacion-usuario.js"></script>
+    
     <footer class="pie">
         <p>© 2026 Capitalia. Todos los derechos reservados.</p>
         <p><a href="/politicas_privacidad" class="nav-item">Política de Privacidad</a></p>

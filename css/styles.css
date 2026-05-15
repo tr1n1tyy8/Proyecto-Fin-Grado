@@ -329,18 +329,21 @@
         padding: 20px;
         display: flex;
         flex-direction: row;
+        justify-content: center;
+        width: 100%;
     }
 
     .pie p {
         color: black;
         color: rgb(161, 161, 161);
         font-size: 15px;
-        margin-left: 70px;
+        margin: 0 20px;
     }
 
     .pie a {
         color: rgb(0, 0, 0);
-        margin-left: 50px;
+        margin: 0 30px;
+        text-decoration: none;
     }
 
     .apartados_novedades {
@@ -1147,4 +1150,211 @@
             text-align: right;
             margin-top: 10px;
         }
-    }}
+    }
+
+/* ============================================================================ */
+/* ESTILOS PARA LA PÁGINA AVISOS.HTML - INICIOS DE SESIÓN */
+/* ============================================================================ */
+
+    .inicios-sesion-container {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        width: 80%;
+        max-width: 900px;
+        margin: 30px auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .inicios-sesion-container h3 {
+        color: rgb(51, 90, 153);
+        margin: 0 0 20px 0;
+        font-size: 20px;
+        border-bottom: 2px solid rgb(232, 232, 236);
+        padding-bottom: 15px;
+    }
+
+    .lista-inicios-sesion {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .inicio-sesion-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: rgb(245, 245, 248);
+        border-left: 4px solid rgb(51, 90, 153);
+        transition: all 0.3s ease;
+    }
+
+    .inicio-sesion-item:hover {
+        background-color: rgb(235, 235, 242);
+    }
+
+    .inicio-sesion-numero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgb(51, 90, 153);
+        color: white;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 16px;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .inicio-sesion-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .inicio-sesion-fecha {
+        font-weight: bold;
+        color: #333;
+        font-size: 14px;
+    }
+
+/* ============================================================================ */
+/* ESTILOS PARA LA PÁGINA INFORMACION.HTML */
+/* ============================================================================ */
+
+    .contenido-informacion {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+    }
+
+    .formulario-informacion {
+        background-color: white;
+        border-radius: 10px;
+        padding: 50px;
+        width: 1300px;
+        display: block;
+    }
+
+    .formulario-informacion h2 {
+        color: rgb(58, 82, 121);
+        text-align: center;
+        margin: 0 0 30px 0;
+        font-size: 35px;
+        width: 100%;
+    }
+
+    #formulario-informacion {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 30px;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .campo-informacion {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .formulario-informacion label {
+        color: black;
+        font-weight: normal;
+        font-size: 18px;
+    }
+
+    .formulario-informacion input {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: rgb(232, 232, 236);
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .formulario-informacion input:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgb(51, 90, 153);
+    }
+
+    .formulario-informacion input:hover {
+        box-shadow: 0 0 5px rgba(51, 90, 153, 0.2);
+    }
+
+    .formulario-informacion input:readonly {
+        background-color: rgb(245, 245, 245);
+        color: rgb(100, 100, 100);
+    }
+
+    .formulario-informacion input.editable {
+        background-color: rgb(255, 255, 255);
+    }
+
+    .error-mensaje {
+        color: #d32f2f;
+        font-size: 12px;
+        min-height: 16px;
+    }
+
+    .botones-informacion {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .botones-edicion {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .formulario-informacion button {
+        background-color: rgb(51, 90, 153);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 10px 25px;
+        height: 40px;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .formulario-informacion button:hover {
+        box-shadow: 0 4px 8px rgb(170, 170, 170);
+    }
+
+    .formulario-informacion button:active {
+        transform: translateY(0);
+    }
+
+    .btn-editar {
+        width: 160px;
+    }
+
+    .btn-guardar {
+        width: 160px;
+    }
+
+    .btn-cancelar {
+        width: 160px;
+        background-color: #999;
+    }
+
+    .btn-cancelar:hover {
+        background-color: #777;
+    }

@@ -100,7 +100,7 @@ async function cargarUltimasTransacciones() {
             localStorage.removeItem('token');
             window.location.href = '/acceso';
         } else {
-            console.error('❌ Error al cargar transacciones');
+            console.error('❌ Error al cargar transacciones. Status:', respuesta.status);
         }
     } catch (error) {
         console.error('❌ Error de conexión:', error);
@@ -118,7 +118,7 @@ function mostrarTransacciones(transacciones) {
         return;
     }
     
-    if (transacciones.length === 0) {
+    if (!transacciones || transacciones.length === 0) {
         divTransacciones.innerHTML = '<p style="text-align: center; color: #999;">No hay transacciones aún</p>';
         return;
     }
@@ -127,53 +127,66 @@ function mostrarTransacciones(transacciones) {
     html += '<div class="lista-transacciones">';
     
     const usuarioActual = localStorage.getItem('email');
+    console.log('👤 Usuario actual:', usuarioActual);
     
     transacciones.forEach(transaccion => {
-        // Formatea la fecha y hora
-        const fechaObj = new Date(transaccion.fecha);
-        const fecha = fechaObj.toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-        const hora = fechaObj.toLocaleTimeString('es-ES', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        
-        // Determinar si es envío o recepción comparando con el email actual
-        const esEnvio = transaccion.emisor === usuarioActual;
-        
-        // Crear la tarjeta de transacción
-        const claseTransaccion = esEnvio ? 'transaccion-envio' : 'transaccion-recepcion';
-        const icono = esEnvio ? '➡️' : '⬅️';
-        const signo = esEnvio ? '-' : '+';
-        const colorClase = esEnvio ? 'envio' : 'recepcion';
-        
-        // Generar el concepto
-        let concepto = transaccion.concepto;
-        if (!concepto || concepto === 'Transferencia Bizum') {
-            if (esEnvio) {
-                concepto = `Transferencia a ${transaccion.nombre_receptor || 'usuario'}`;
-            } else {
-                // Obtener el nombre del emisor (convertir email a algo legible si es necesario)
-                const nombreEmisor = transaccion.emisor ? transaccion.emisor.split('@')[0] : 'usuario';
-                concepto = `Recibido de ${nombreEmisor}`;
+        try {
+            // Validar que tenemos los datos necesarios
+            if (!transaccion || !transaccion.fecha || transaccion.cantidad === undefined) {
+                console.warn('⚠️ Transacción incompleta:', transaccion);
+                return;
             }
+            
+            // Formatea la fecha y hora
+            const fechaObj = new Date(transaccion.fecha);
+            const fecha = fechaObj.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            const hora = fechaObj.toLocaleTimeString('es-ES', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Determinar si es envío o recepción comparando con el email actual
+            const esEnvio = transaccion.emisor === usuarioActual;
+            console.log(`Transacción - Emisor: ${transaccion.emisor}, Actual: ${usuarioActual}, Es envío: ${esEnvio}`);
+            
+            // Crear la tarjeta de transacción
+            const claseTransaccion = esEnvio ? 'transaccion-envio' : 'transaccion-recepcion';
+            const icono = esEnvio ? '➡️' : '⬅️';
+            const signo = esEnvio ? '-' : '+';
+            const colorClase = esEnvio ? 'envio' : 'recepcion';
+            
+            // Generar el concepto
+            let concepto = transaccion.concepto && transaccion.concepto !== 'Transferencia Bizum' 
+                ? transaccion.concepto 
+                : null;
+            
+            if (!concepto) {
+                if (esEnvio) {
+                    concepto = `Transferencia a ${transaccion.nombre_receptor || 'usuario'}`;
+                } else {
+                    concepto = `Recibido de ${transaccion.nombre_emisor || transaccion.emisor || 'usuario'}`;
+                }
+            }
+            
+            html += `
+                <div class="transaccion-item ${claseTransaccion}">
+                    <div class="transaccion-icono">${icono}</div>
+                    <div class="transaccion-info">
+                        <div class="transaccion-concepto">${concepto}</div>
+                        <div class="transaccion-fecha">${fecha} a las ${hora}</div>
+                    </div>
+                    <div class="transaccion-cantidad" data-tipo="${colorClase}">
+                        ${signo}${transaccion.cantidad.toFixed(2)}€
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            console.error('❌ Error al procesar transacción:', error, transaccion);
         }
-        
-        html += `
-            <div class="transaccion-item ${claseTransaccion}">
-                <div class="transaccion-icono">${icono}</div>
-                <div class="transaccion-info">
-                    <div class="transaccion-concepto">${concepto}</div>
-                    <div class="transaccion-fecha">${fecha} a las ${hora}</div>
-                </div>
-                <div class="transaccion-cantidad" data-tipo="${colorClase}">
-                    ${signo}${transaccion.cantidad.toFixed(2)}€
-                </div>
-            </div>
-        `;
     });
     
     html += '</div>';
@@ -185,14 +198,25 @@ function mostrarTransacciones(transacciones) {
 // ============================================================================
 // CUANDO CARGA EL DASHBOARD
 // ============================================================================
-window.addEventListener('DOMContentLoaded', function() {
-    if (window.location.href.includes('/dashboard')) {
-        console.log('📊 Dashboard cargado');
-        
-        // Esperar a que carguDashboard() haya terminado
-        setTimeout(() => {
-            cargarSaldoUsuario();
-            cargarUltimasTransacciones();
-        }, 500);
+
+// Función para inicializar el dashboard
+function inicializarDashboard() {
+    console.log('📊 Inicializando dashboard...');
+    
+    if (!estaAutenticado()) {
+        console.log('⚠️ Usuario no autenticado, redirigiendo a login');
+        window.location.href = '/acceso';
+        return;
     }
-});
+    
+    cargarSaldoUsuario();
+    cargarUltimasTransacciones();
+}
+
+// Ejecutar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarDashboard);
+} else {
+    // Si el DOM ya está cargado, ejecutar inmediatamente
+    setTimeout(inicializarDashboard, 100);
+}

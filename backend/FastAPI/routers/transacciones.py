@@ -8,7 +8,7 @@
 # ============================================================================
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_
 
 from ..database import get_db
@@ -158,29 +158,7 @@ async def obtener_historial(
     usuario_autenticado: Cliente = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    GET /transacciones/{cliente_id} - Obtener historial de movimientos.
-    
-    ⚠️ PROTEGIDA: Requiere JWT token
-    ⚠️ SEGURIDAD: Solo puedes ver tu propio historial, no el de otros
-    
-    Devuelve:
-    - Saldo actual del cliente
-    - Todas las transacciones enviadas
-    - Todas las transacciones recibidas
-    
-    Args:
-        cliente_id: ID del cliente (debe ser del usuario autenticado)
-        usuario_autenticado: Usuario autenticado (de Depends)
-        db: Sesión de BD
-    
-    Returns:
-        HistorialResponse con saldo y transacciones
-    
-    Raises:
-        403: Intentas acceder a historial de otro usuario
-    """
-    
+
     # ⚠️ SEGURIDAD: Verificar que solo ve su propio historial
     if usuario_autenticado.id != cliente_id:
         raise HTTPException(
@@ -232,33 +210,61 @@ async def obtener_ultimas_transacciones(
     
     ⚠️ PROTEGIDA: Requiere JWT token
     
-    Devuelve las 5 transacciones más recientes (enviadas o recibidas).
+    Devuelve las 5 transacciones más recientes (enviadas o recibidas) con información
+    de emisor y receptor.
     
     Returns:
         Lista de hasta 5 TransaccionResponse ordenadas por fecha (más reciente primero)
     """
     
     usuario_id = usuario_autenticado.id
+    print(f"🔍 Buscando transacciones para usuario ID: {usuario_id}")
     
     # Obtener todas las transacciones del usuario (enviadas + recibidas) ordenadas por fecha
-    transacciones = db.query(Transaccion).filter(
+    # Usar joinedload para cargar las relaciones de emisor y receptor
+    transacciones = db.query(Transaccion).options(
+        joinedload(Transaccion.emisor),
+        joinedload(Transaccion.receptor)
+    ).filter(
         (Transaccion.id_emisor == usuario_id) | (Transaccion.id_receptor == usuario_id)
     ).order_by(Transaccion.fecha.desc()).limit(5).all()
+    
+    print(f"📊 Encontradas {len(transacciones)} transacciones")
+    
+    if not transacciones:
+        print("⚠️ Sin transacciones encontradas")
+        return []
     
     # Convertir a schemas de respuesta con información adicional
     resultado = []
     for t in transacciones:
-        trans_dict = {
-            "id": t.id,
-            "id_emisor": t.id_emisor,
-            "id_receptor": t.id_receptor,
-            "cantidad": t.cantidad,
-            "concepto": t.concepto,
-            "fecha": t.fecha,
-            "emisor": t.emisor.email if t.emisor else None,
-            "receptor": t.receptor.email if t.receptor else None,
-            "nombre_receptor": t.receptor.nombre if t.receptor else None
-        }
-        resultado.append(TransaccionResponse(**trans_dict))
+        try:
+            # Obtener datos del emisor y receptor
+            email_emisor = t.emisor.email if t.emisor else None
+            email_receptor = t.receptor.email if t.receptor else None
+            nombre_emisor = t.emisor.nombre if t.emisor else None
+            nombre_receptor = t.receptor.nombre if t.receptor else None
+            
+            print(f"  📝 Trans #{t.id}: {email_emisor} → {email_receptor} | {t.cantidad}€")
+            
+            # Crear el diccionario para TransaccionResponse
+            trans_dict = {
+                "id": t.id,
+                "id_emisor": t.id_emisor,
+                "id_receptor": t.id_receptor,
+                "cantidad": t.cantidad,
+                "concepto": t.concepto,
+                "fecha": t.fecha,
+                "emisor": email_emisor,
+                "receptor": email_receptor,
+                "nombre_emisor": nombre_emisor,
+                "nombre_receptor": nombre_receptor
+            }
+            
+            trans_response = TransaccionResponse(**trans_dict)
+            resultado.append(trans_response)
+        except Exception as e:
+            print(f"❌ Error procesando transacción: {e}")
     
+    print(f"✅ Retornando {len(resultado)} transacciones")
     return resultado

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="../images/logo.png" />
     <link rel="stylesheet" href="/css/styles.css">
-    <title>Avisos - Capitalia</title>
+    <title>Tu Actividad - Capitalia</title>
 </head>
 <body>
     <header class="cabecera-dashboard">
@@ -23,9 +23,18 @@
     </header>
     <script src="/js/main.js"></script>
     <main class="contenido">
-        <h2 class="titulo-novedades">Tu Actividad</h2>
-        <p>Último inicio de sesión: 2023-10-01 10:30:00</p>
+        <h2>Tu Actividad</h2>
+        
+        <div class="inicios-sesion-container">
+            <h3>Últimos Inicios de Sesión</h3>
+            <div class="lista-inicios-sesion">
+                <p style="text-align: center; color: #999;">Cargando inicios de sesión...</p>
+            </div>
+        </div>
     </main>
+    <script src="/js/main.js"></script>
+    <script src="/js/login-api.js"></script>
+    <script src="/js/avisos-inicios-sesion.js"></script>
     <footer class="pie">
         <p>© 2026 Capitalia. Todos los derechos reservados.</p>
         <p><a href="/politicas_privacidad" class="nav-item">Política de Privacidad</a></p>

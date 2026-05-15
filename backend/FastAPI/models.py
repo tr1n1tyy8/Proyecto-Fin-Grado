@@ -100,3 +100,33 @@ class Transaccion(Base):
     def __repr__(self):
         """Representación útil para debugging"""
         return f"<Transaccion(id={self.id}, emisor={self.id_emisor}, receptor={self.id_receptor}, cantidad={self.cantidad})>"
+
+
+# MODELO 3: INICIO DE SESIÓN
+# =====================================================
+class InitioSesion(Base):
+    """
+    Tabla 'inicios_sesion' - Registro de todos los inicios de sesión de los usuarios.
+    
+    Campos:
+    - id: Identificador único del registro
+    - id_cliente: Cliente que inició sesión (Foreign Key a clientes.id)
+    - fecha_hora: Cuándo se hizo el login
+    """
+    
+    __tablename__ = "inicios_sesion"
+    
+    # COLUMNAS
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    id_cliente = Column(Integer, ForeignKey("clientes.id"), nullable=False)
+    fecha_hora = Column(DateTime, default=datetime.utcnow, nullable=False)
+    
+    # RELACIÓN CON CLIENTE
+    cliente = relationship(
+        "Cliente",
+        backref="inicios_sesion"
+    )
+    
+    def __repr__(self):
+        """Representación útil para debugging"""
+        return f"<InitioSesion(id={self.id}, id_cliente={self.id_cliente}, fecha_hora={self.fecha_hora})>"

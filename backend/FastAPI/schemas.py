@@ -51,24 +51,34 @@ class ClienteResponse(BaseModel):
     nacionalidad: str
     ciudad: str
     provincia: str
+    fecha_nacimiento: datetime
+    direccion: str
+    codigo_postal: str
+    pais_residencia: str
+    situacion_laboral: str
     
     class Config:
         from_attributes = True
 
 
+class ClienteActualizarCompleto(BaseModel):
+    """Datos para actualizar perfil del cliente (PUT /usuarios/actualizar/{email})"""
+    nombre: str = Field(..., min_length=2, max_length=50)
+    apellidos: str = Field(..., min_length=2, max_length=100)
+    telefono: str = Field(..., min_length=9, max_length=20)
+    fecha_nacimiento: date
+    nacionalidad: str = Field(..., min_length=2, max_length=50)
+    direccion: str = Field(..., min_length=5, max_length=150)
+    provincia: str = Field(..., min_length=2, max_length=50)
+    ciudad: str = Field(..., min_length=2, max_length=50)
+    codigo_postal: str = Field(..., min_length=5, max_length=10)
+    pais_residencia: str = Field(..., min_length=2, max_length=50)
+    situacion_laboral: str
+
+
 # ==================== SCHEMAS DE TRANSACCIONES ====================
 
 class TransaccionBizum(BaseModel):
-    """
-    Datos para realizar un Bizum (POST /transferir).
-    
-    Validaciones:
-    - cantidad > 0 (no se puede enviar dinero negativo)
-    - cantidad <= 500 (máximo por transferencia)
-    - concepto opcional (por qué se envía el dinero)
-    - numero_receptor: número de teléfono del receptor (para identificarlo)
-    - nombre_receptor: nombre del receptor (para verificar que es correcto)
-    """
     cantidad: float = Field(..., gt=0, description="Cantidad a transferir (mayor que 0)")
     numero_receptor: str = Field(..., description="Teléfono del receptor")
     nombre_receptor: str = Field(..., min_length=1, description="Nombre del receptor (para verificar)")
@@ -84,16 +94,13 @@ class TransaccionResponse(BaseModel):
     fecha: datetime
     emisor: Optional[str] = None  # Email del emisor
     receptor: Optional[str] = None  # Email del receptor
+    nombre_emisor: Optional[str] = None  # Nombre del emisor
     nombre_receptor: Optional[str] = None  # Nombre del receptor (si está disponible)
     
     class Config:
         from_attributes = True
 
 class HistorialResponse(BaseModel):
-    """
-    Respuesta completa del historial de transacciones de un cliente.
-    Incluye tanto transacciones enviadas como recibidas.
-    """
     saldo_actual: float
     transacciones_recibidas: list[TransaccionResponse]
     transacciones_enviadas: list[TransaccionResponse]
@@ -102,11 +109,9 @@ class HistorialResponse(BaseModel):
 # ==================== SCHEMAS DE RESPUESTAS JWT ====================
 
 class Token(BaseModel):
-    """Respuesta después del login exitoso"""
     access_token: str
     token_type: str = "bearer"
 
 class TokenData(BaseModel):
-    """Datos dentro del JWT token decodificado"""
     email: Optional[str] = None
     exp: Optional[datetime] = None
