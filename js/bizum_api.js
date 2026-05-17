@@ -11,6 +11,28 @@
 let datosTransferencia = null; // Guardar datos mientras se confirma
 
 // ============================================================================
+// FUNCIÓN: MOSTRAR ERROR INLINE
+// ============================================================================
+function mostrarErrorInline(campo, mensaje) {
+    const errorElement = document.getElementById(`error-${campo}`);
+    if (errorElement) {
+        errorElement.textContent = mensaje;
+        errorElement.classList.add('visible');
+    }
+}
+
+// ============================================================================
+// FUNCIÓN: LIMPIAR ERRORES
+// ============================================================================
+function limpiarErrores() {
+    const errores = document.querySelectorAll('[id^="error-"]');
+    errores.forEach(error => {
+        error.textContent = '';
+        error.classList.remove('visible');
+    });
+}
+
+// ============================================================================
 // FUNCIÓN: VALIDAR Y PREPARAR TRANSFERENCIA
 // ============================================================================
 document.addEventListener('submit', function(e) {
@@ -29,6 +51,9 @@ document.addEventListener('submit', function(e) {
 async function validarYPrepararTransferencia() {
     console.log('📋 Validando datos de transferencia...');
     
+    // Limpiar errores previos
+    limpiarErrores();
+    
     // Recoger datos del formulario
     const numero_receptor = document.getElementById('numero_receptor').value.trim();
     const nombre_receptor = document.getElementById('nombre_receptor').value.trim();
@@ -37,35 +62,44 @@ async function validarYPrepararTransferencia() {
     
     // VALIDACIÓN 1: Campos requeridos
     if (!numero_receptor || !nombre_receptor || !cantidad) {
-        alert('⚠️ Por favor, rellena todos los campos requeridos');
+        if (!numero_receptor) mostrarErrorInline('numero_receptor', '⚠️ Por favor, ingresa el teléfono del receptor');
+        if (!nombre_receptor) mostrarErrorInline('nombre_receptor', '⚠️ Por favor, ingresa el nombre del receptor');
+        if (!cantidad) mostrarErrorInline('cantidad', '⚠️ Por favor, ingresa la cantidad');
         return;
     }
     
     // VALIDACIÓN 2: Formato de teléfono (9 dígitos)
     const telefonoLimpio = numero_receptor.replace(/\D/g, ''); // Elimina caracteres no dígitos
     if (telefonoLimpio.length !== 9) {
-        alert('⚠️ El teléfono debe tener 9 dígitos');
+        mostrarErrorInline('numero_receptor', '⚠️ El teléfono debe tener 9 dígitos');
         return;
     }
     
     // Guardar solo los 9 dígitos del teléfono
     const numeroFinal = telefonoLimpio;
     
+    // VALIDACIÓN 2.5: Verificar que no se envía a sí mismo
+    const miTelefono = localStorage.getItem('telefono');
+    if (miTelefono && numeroFinal === miTelefono) {
+        mostrarErrorInline('numero_receptor', '❌ No puedes enviar Bizum a tu propio número');
+        return;
+    }
+    
     // VALIDACIÓN 3: Cantidad válida
     if (cantidad <= 0) {
-        alert('⚠️ La cantidad debe ser mayor a 0€');
+        mostrarErrorInline('cantidad', '⚠️ La cantidad debe ser mayor a 0€');
         return;
     }
     
     // VALIDACIÓN 4: Máximo 500€
     if (cantidad > 500) {
-        alert('⚠️ El máximo por transferencia es de 500€');
+        mostrarErrorInline('cantidad', '⚠️ El máximo por transferencia es de 500€');
         return;
     }
     
     // VALIDACIÓN 5: Máximo 2 decimales
     if (cantidad.toString().split('.')[1]?.length > 2) {
-        alert('⚠️ La cantidad solo puede tener máximo 2 decimales');
+        mostrarErrorInline('cantidad', '⚠️ La cantidad solo puede tener máximo 2 decimales');
         return;
     }
     
@@ -142,8 +176,10 @@ async function confirmarTransferencia() {
     const token = localStorage.getItem('token');
     
     if (!token) {
-        alert('❌ Error: No hay sesión. Por favor, inicia sesión de nuevo');
-        window.location.href = '/acceso';
+        mostrarErrorInline('numero_receptor', '❌ Error: No hay sesión. Por favor, inicia sesión de nuevo');
+        setTimeout(() => {
+            window.location.href = '/acceso';
+        }, 1500);
         return;
     }
     
@@ -180,7 +216,7 @@ async function confirmarTransferencia() {
         } else {
             // ❌ Error desde la API
             console.error('❌ Error en la API:', datos);
-            alert('❌ Error: ' + (datos.detail || 'Error desconocido'));
+            mostrarErrorInline('numero_receptor', '❌ Error: ' + (datos.detail || 'Error desconocido'));
             
             // Mostrar confirmación nuevamente para volver a intentar
             mostrarConfirmacion();
@@ -188,7 +224,7 @@ async function confirmarTransferencia() {
     } catch (error) {
         // ❌ Error de conexión
         console.error('❌ Error de conexión:', error);
-        alert('❌ Error de conexión: ' + error.message);
+        mostrarErrorInline('numero_receptor', '❌ Error de conexión: ' + error.message);
         
         // Mostrar confirmación nuevamente
         mostrarConfirmacion();
@@ -237,8 +273,10 @@ window.addEventListener('DOMContentLoaded', function() {
         
         // Verificar que está autenticado
         if (!localStorage.getItem('token')) {
-            alert('⚠️ Necesitas iniciar sesión');
-            window.location.href = '/acceso';
+            mostrarErrorInline('numero_receptor', '⚠️ Necesitas iniciar sesión');
+            setTimeout(() => {
+                window.location.href = '/acceso';
+            }, 1500);
         }
     }
 });

@@ -5,6 +5,37 @@
         box-sizing: border-box;
     }
 
+    /* ========================================================================
+       ESTILOS DE MENSAJES DE ERROR INLINE
+       ======================================================================== */
+    .error-mensaje {
+        display: none;
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 4px;
+        font-weight: 500;
+        padding: 6px 8px;
+        background-color: #f8d7da;
+        border-left: 3px solid #dc3545;
+        border-radius: 3px;
+    }
+
+    .error-mensaje.visible {
+        display: block;
+        animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     @keyframes fadeInUp {
         from {
             opacity: 0;
@@ -1357,5 +1388,130 @@
 
     .btn-cancelar:hover {
         background-color: #777;
+    }
+
+    /* ========================================================================
+       ESTILOS PÁGINA MAS_INFORMACION
+       ======================================================================== */
+    .contenido-informacion {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .seccion-info {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-left: 4px solid #1A73E8;
+    }
+
+    .seccion-info h2 {
+        color: #1A73E8;
+        margin-top: 0;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .seccion-info p {
+        color: #555;
+        line-height: 1.6;
+        margin: 10px 0;
+    }
+
+    .seccion-info ul {
+        margin: 15px 0;
+        padding-left: 20px;
+    }
+
+    .seccion-info ul li {
+        color: #555;
+        margin: 8px 0;
+        line-height: 1.5;
+    }
+
+    .seccion-caracteristicas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .caracteristica {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .caracteristica-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .caracteristica-nombre {
+        color: #1A73E8;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .caracteristica-desc {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .seccion-ventajas {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left-color: #1976d2;
+    }
+
+    .seccion-seguridad {
+        background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+        border-left-color: #7b1fa2;
+    }
+
+    .seccion-contacto {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left-color: #388e3c;
+    }
+
+    .seccion-info h2.titulo-ventajas {
+        color: #1976d2;
+    }
+
+    .seccion-info h2.titulo-seguridad {
+        color: #7b1fa2;
+    }
+
+    .seccion-info h2.titulo-contacto {
+        color: #388e3c;
+    }
+
+    .info-contacto {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .datos-contacto {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .datos-contacto-label {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .datos-contacto-valor {
+        color: #1A73E8;
+        font-weight: bold;
+        font-size: 1.1rem;
     }
 }

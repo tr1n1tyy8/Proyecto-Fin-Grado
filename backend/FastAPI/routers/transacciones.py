@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_
 
-from ..database import get_db
+from ..bbdd import get_db
 from ..models import Cliente, Transaccion
 from ..schemas import TransaccionBizum, HistorialResponse, TransaccionResponse
 from .autenticacion import get_current_user

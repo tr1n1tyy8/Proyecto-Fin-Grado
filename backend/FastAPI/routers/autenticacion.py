@@ -16,7 +16,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 
 # Importar desde nuestros módulos
-from ..database import get_db
+from ..bbdd import get_db
 from ..models import Cliente, InitioSesion
 from ..schemas import ClienteRegistro, ClienteResponse, Token, ClienteActualizarCompleto
 

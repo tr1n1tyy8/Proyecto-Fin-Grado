@@ -9,7 +9,7 @@ from pathlib import Path
 from .routers import autenticacion, transacciones
 
 # Importar BD (para crear las tablas)
-from .database import engine
+from .bbdd import engine
 from .models import Base
 
 # ============================================================================

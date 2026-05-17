@@ -8,7 +8,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from .database import Base
+from .bbdd import Base
 
 # MODELO 1: CLIENTE (Usuario del banco)
 # =====================================================
@@ -62,18 +62,6 @@ class Cliente(Base):
 # MODELO 2: TRANSACCIÓN (Bizum)
 # =====================================================
 class Transaccion(Base):
-    """
-    Tabla 'transacciones' - Historial de todos los movimientos bancarios.
-    
-    Campos:
-    - id: Identificador único de la transacción
-    - id_emisor: Cliente que envía dinero (Foreign Key a clientes.id)
-    - id_receptor: Cliente que recibe dinero (Foreign Key a clientes.id)
-    - cantidad: Dinero transferido (siempre positivo)
-    - concepto: Motivo de la transferencia (p.ej. "Pago de cena")
-    - fecha: Cuándo se hizo la transacción
-    """
-    
     __tablename__ = "transacciones"
     
     # COLUMNAS

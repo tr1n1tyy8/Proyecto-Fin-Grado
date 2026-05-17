@@ -43,7 +43,28 @@ async function iniciarSesion(event) {
             localStorage.setItem('token', datos.access_token);
             localStorage.setItem('email', email);
             
-            // 2. Ir al dashboard
+            // 2. Obtener datos del usuario (incluyendo teléfono)
+            try {
+                const usuarioResponse = await fetch(API_URL + '/usuarios/' + email, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${datos.access_token}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (usuarioResponse.ok) {
+                    const usuarioData = await usuarioResponse.json();
+                    if (usuarioData.telefono) {
+                        localStorage.setItem('telefono', usuarioData.telefono);
+                        console.log('✅ Teléfono guardado en localStorage');
+                    }
+                }
+            } catch (err) {
+                console.warn('⚠️ No se pudo obtener el teléfono:', err);
+            }
+            
+            // 3. Ir al dashboard
             console.log('✅ Redirigiendo al dashboard...');
             window.location.href = '/dashboard';
         } else {
