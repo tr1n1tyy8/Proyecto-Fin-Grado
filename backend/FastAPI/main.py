@@ -234,3 +234,14 @@ async def api_root():
 async def health_check():
     """Health check para verificar el estado de la API"""
     return {"status": "ok"}
+
+# ============================================================================
+# ADAPTACIÓN PARA DESPLIEGUE EN VERCEL
+# ============================================================================
+# Vercel necesita mapear la ruta base para no generar errores 404 en la nube.
+from fastapi.responses import RedirectResponse
+
+@app.get("/")
+def main_root():
+    # Redirige automáticamente la página en blanco a la documentación interactiva
+    return RedirectResponse(url="/docs")
