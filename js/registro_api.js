@@ -11,8 +11,6 @@
 // PASO 1: GUARDAR SITUACIÓN LABORAL (Página 1)
 // ============================================================================
 
-const API_URL = "https://proyectofingrado.vercel.app";
-
 function guardarSituacionLaboral() {
     const situacion = document.getElementById('situacion_laboral').value;
     

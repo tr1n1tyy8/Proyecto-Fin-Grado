@@ -9,8 +9,6 @@
 // FUNCIÓN: INICIAR SESIÓN (login.html)
 // ============================================================================
 
-const API_URL = "https://proyectofingrado.vercel.app";
-
 async function iniciarSesion(event) {
     event.preventDefault(); // No recargar la página
     
