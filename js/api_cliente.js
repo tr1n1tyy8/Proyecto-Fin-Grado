@@ -5,8 +5,8 @@
 // Solo copia y pega el código de FRONTEND-INTEGRATION.md para usarlas.
 // ====================================
 
-// Dirección de la API
-const API_URL = "http://localhost:8000";
+// Dirección de la API (misma URL donde corre el frontend/back en Vercel)
+const API_URL = window.location.origin;
 
 // ====================================
 // HELPERS (funciones internas)

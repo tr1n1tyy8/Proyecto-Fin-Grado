@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', protegerRuta);
 
 // Intersection Observer para detectar cuando los apartados entran en vista
 
-const API_URL = "https://proyectofingrado.vercel.app";
+const API_URL = window.location.origin;
 
 const observerOptions = {
     threshold: 0.1,

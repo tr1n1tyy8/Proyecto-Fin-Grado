@@ -20,6 +20,7 @@ lib64/
 .env
 .env.local
 .env.*
+!.env.example
 
 # ============================================================================
 # ARCHIVOS DE SISTEMA Y LOGS

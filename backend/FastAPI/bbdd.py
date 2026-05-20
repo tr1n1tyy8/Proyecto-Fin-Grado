@@ -14,16 +14,29 @@ from sqlalchemy.orm import sessionmaker
 # Cargamos las variables del archivo .env
 load_dotenv()
 
-# Obtenemos la URL de Aiven desde el archivo .env
-# Si por alguna razón no la encuentra, intenta usar el localhost por defecto
+# Obtenemos la URL de la BD desde variables de entorno
+# En local se mantiene un fallback, pero en Vercel debe configurarse DATABASE_URL.
 DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "mysql+pymysql://root:@localhost:3306/proyecto_fin_grado"
+    "DATABASE_URL",
+    "mysql+pymysql://root:@localhost:3306/proyecto_fin_grado",
 )
 
+# Aiven MySQL funciona mejor con TLS habilitado. Permitimos desactivarlo en local.
+DB_SSL_DISABLED = os.getenv("DB_SSL_DISABLED", "false").lower() == "true"
+
 # Creamos el motor de conexión
-# echo=False para que no ensucie la consola con logs de SQL
-engine = create_engine(DATABASE_URL, echo=False)
+# pool_pre_ping/pool_recycle ayudan en entornos serverless con conexiones cortadas.
+engine_kwargs = {
+    "echo": False,
+    "pool_pre_ping": True,
+    "pool_recycle": 280,
+}
+
+if not DB_SSL_DISABLED and "localhost" not in DATABASE_URL and "127.0.0.1" not in DATABASE_URL:
+    # En PyMySQL, pasar un dict vacío en ssl fuerza TLS.
+    engine_kwargs["connect_args"] = {"ssl": {}}
+
+engine = create_engine(DATABASE_URL, **engine_kwargs)
 
 # Clase para crear las sesiones de base de datos
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

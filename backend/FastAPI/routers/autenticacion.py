@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
+import os
 
 # Importar desde nuestros módulos
 from ..bbdd import get_db
@@ -27,7 +28,7 @@ from ..schemas import ClienteRegistro, ClienteResponse, Token, ClienteActualizar
 ALGORITHM = "HS256"
 ACCESS_TOKEN_DURATION = 30  # Subido a 30 min para que no se te cierre la sesión tan rápido probando
 
-SECRET = "ceaad262e916ec4fff4df3c3f7679e7913d209bcaad56df1cfa9612f5665c00a"
+SECRET = os.getenv("JWT_SECRET", "change-this-in-production")
 
 # Contexto de cifrado con bcrypt
 crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
