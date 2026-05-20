@@ -57,3 +57,5 @@ dist/
 *.sqlite3
 # Si alguna vez generas un dump como el que hicimos, mejor que no se suba
 *.sql
+.vercel
+.env*.local
