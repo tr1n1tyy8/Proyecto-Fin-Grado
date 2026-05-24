@@ -50,3 +50,16 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(apartado);
     });
 });
+
+// Función para los mensajes de error de la página (cambiar alertas del navegador por pop ups en la página)
+const _alertContainer = document.createElement('div');
+_alertContainer.style.cssText = 'position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px';
+document.body.appendChild(_alertContainer);
+
+window.alert = function(msg) {
+    const box = document.createElement('div');
+    box.textContent = msg;
+    box.style.cssText = 'background:#fee2e2;color:#991b1b;padding:12px 16px;border-radius:8px;border-left:4px solid #f87171;font-size:14px;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,0.1)';
+    _alertContainer.appendChild(box);
+    setTimeout(() => box.remove(), 5000);
+};
