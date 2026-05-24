@@ -79,6 +79,10 @@ async function cargarUltimasTransacciones() {
     }
     
     const token = localStorage.getItem('token');
+    if (!token) {
+        console.log('⚠️ Token no disponible, no se puede cargar el historial de transacciones');
+        return;
+    }
     
     try {
         // Llamar a GET /transacciones/ultimas
@@ -204,7 +208,7 @@ function mostrarTransacciones(transacciones) {
 // ============================================================================
 
 // Función para inicializar el dashboard
-function inicializarDashboard() {
+async function inicializarDashboard() {
     console.log('📊 Inicializando dashboard...');
     
     if (!estaAutenticado()) {
@@ -213,20 +217,21 @@ function inicializarDashboard() {
         return;
     }
     
-    cargarSaldoUsuario();
-
-    // Solo cargar transacciones si existe el contenedor en el dashboard
-    if (document.querySelector('.historial-transacciones')) {
-        cargarUltimasTransacciones();
-    } else {
-        console.log('ℹ️ Contenedor de transacciones ausente, no se cargan movimientos.');
-    }
+    await cargarSaldoUsuario();
 }
 
 // Ejecutar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializarDashboard);
-} else {
-    // Si el DOM ya está cargado, ejecutar inmediatamente
-    setTimeout(inicializarDashboard, 100);
-}
+document.addEventListener('DOMContentLoaded', async function() {
+    await inicializarDashboard();
+
+    if (!localStorage.getItem('token')) {
+        console.log('⚠️ No hay token en localStorage, no se cargan las transacciones.');
+        return;
+    }
+
+    if (document.querySelector('.historial-transacciones')) {
+        await cargarUltimasTransacciones();
+    } else {
+        console.log('ℹ️ Contenedor de transacciones ausente, no se cargan movimientos.');
+    }
+});
