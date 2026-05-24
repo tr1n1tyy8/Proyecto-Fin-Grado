@@ -100,10 +100,14 @@ async function cargarUltimasTransacciones() {
             localStorage.removeItem('token');
             window.location.href = '/acceso';
         } else {
-            console.error('❌ Error al cargar transacciones. Status:', respuesta.status);
+            const errorText = `Error al cargar transacciones. Status: ${respuesta.status}`;
+            console.error('❌', errorText);
+            window.alert(errorText);
         }
     } catch (error) {
-        console.error('❌ Error de conexión:', error);
+        const errorText = `Error de conexión: ${error.message}`;
+        console.error('❌', errorText);
+        window.alert(errorText);
     }
 }
 
@@ -119,7 +123,7 @@ function mostrarTransacciones(transacciones) {
     }
     
     if (!transacciones || transacciones.length === 0) {
-        divTransacciones.innerHTML = '<p style="text-align: center; color: #999;">No hay transacciones aún</p>';
+        divTransacciones.innerHTML = '<p style="text-align: center; color: #999;">Aún no tienes transacciones</p>';
         return;
     }
     
@@ -210,7 +214,13 @@ function inicializarDashboard() {
     }
     
     cargarSaldoUsuario();
-    cargarUltimasTransacciones();
+
+    // Solo cargar transacciones si existe el contenedor en el dashboard
+    if (document.querySelector('.historial-transacciones')) {
+        cargarUltimasTransacciones();
+    } else {
+        console.log('ℹ️ Contenedor de transacciones ausente, no se cargan movimientos.');
+    }
 }
 
 // Ejecutar cuando el DOM esté listo
