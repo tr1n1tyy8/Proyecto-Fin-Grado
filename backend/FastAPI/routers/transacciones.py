@@ -149,54 +149,6 @@ async def transferir_bizum(
 
 
 # ============================================================================
-# RUTA: GET /transacciones/{cliente_id} - HISTORIAL DE MOVIMIENTOS
-# ============================================================================
-
-@router.get("/{cliente_id}", response_model=HistorialResponse)
-async def obtener_historial(
-    cliente_id: int,
-    usuario_autenticado: Cliente = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-
-    # ⚠️ SEGURIDAD: Verificar que solo ve su propio historial
-    if usuario_autenticado.id != cliente_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes permiso para ver el historial de otros usuarios"
-        )
-    
-    # Buscar el cliente
-    cliente = db.query(Cliente).filter(Cliente.id == cliente_id).first()
-    
-    if not cliente:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Cliente no encontrado"
-        )
-    
-    # Obtener transacciones (ordenadas por fecha, más recientes primero)
-    transacciones_enviadas = db.query(Transaccion).filter(
-        Transaccion.id_emisor == cliente_id
-    ).order_by(Transaccion.fecha.desc()).all()
-    
-    transacciones_recibidas = db.query(Transaccion).filter(
-        Transaccion.id_receptor == cliente_id
-    ).order_by(Transaccion.fecha.desc()).all()
-    
-    # Convertir a schemas de respuesta
-    return HistorialResponse(
-        saldo_actual=cliente.saldo,
-        transacciones_enviadas=[
-            TransaccionResponse.from_orm(t) for t in transacciones_enviadas
-        ],
-        transacciones_recibidas=[
-            TransaccionResponse.from_orm(t) for t in transacciones_recibidas
-        ]
-    )
-
-
-# ============================================================================
 # RUTA: GET /ultimas - OBTENER LAS 5 ÚLTIMAS TRANSACCIONES
 # ============================================================================
 
@@ -268,3 +220,51 @@ async def obtener_ultimas_transacciones(
     
     print(f"✅ Retornando {len(resultado)} transacciones")
     return resultado
+
+
+# ============================================================================
+# RUTA: GET /transacciones/{cliente_id} - HISTORIAL DE MOVIMIENTOS
+# ============================================================================
+
+@router.get("/{cliente_id}", response_model=HistorialResponse)
+async def obtener_historial(
+    cliente_id: int,
+    usuario_autenticado: Cliente = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    # ⚠️ SEGURIDAD: Verificar que solo ve su propio historial
+    if usuario_autenticado.id != cliente_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permiso para ver el historial de otros usuarios"
+        )
+    
+    # Buscar el cliente
+    cliente = db.query(Cliente).filter(Cliente.id == cliente_id).first()
+    
+    if not cliente:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Cliente no encontrado"
+        )
+    
+    # Obtener transacciones (ordenadas por fecha, más recientes primero)
+    transacciones_enviadas = db.query(Transaccion).filter(
+        Transaccion.id_emisor == cliente_id
+    ).order_by(Transaccion.fecha.desc()).all()
+    
+    transacciones_recibidas = db.query(Transaccion).filter(
+        Transaccion.id_receptor == cliente_id
+    ).order_by(Transaccion.fecha.desc()).all()
+    
+    # Convertir a schemas de respuesta
+    return HistorialResponse(
+        saldo_actual=cliente.saldo,
+        transacciones_enviadas=[
+            TransaccionResponse.from_orm(t) for t in transacciones_enviadas
+        ],
+        transacciones_recibidas=[
+            TransaccionResponse.from_orm(t) for t in transacciones_recibidas
+        ]
+    )
