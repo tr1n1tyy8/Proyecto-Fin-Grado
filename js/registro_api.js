@@ -44,6 +44,42 @@ function guardarPersonales() {
         alert('⚠️ Por favor, rellena todos los campos');
         return;
     }
+
+    // --- Validaciones Página 2 ---
+    // Validación Página 2 - Campos "nombre", "apellidos", "nacionalidad" y "pais_residencia":
+    // sólo letras y espacios (sin números ni caracteres especiales)
+    const letrasEspaciosRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
+    let erroresP2 = 0;
+
+    if (!letrasEspaciosRegex.test(nombre)) {
+        window.alert('Nombre: sólo se permiten letras y espacios');
+        erroresP2++;
+    }
+
+    if (!letrasEspaciosRegex.test(apellidos)) {
+        window.alert('Apellidos: sólo se permiten letras y espacios');
+        erroresP2++;
+    }
+
+    if (!letrasEspaciosRegex.test(nacionalidad)) {
+        window.alert('Nacionalidad: sólo se permiten letras y espacios');
+        erroresP2++;
+    }
+
+    if (!letrasEspaciosRegex.test(pais_residencia)) {
+        window.alert('País: sólo se permiten letras y espacios');
+        erroresP2++;
+    }
+
+    // Validación Página 2 - Campo "dni": formato español estándar (8 dígitos + letra)
+    const dniRegex = /^\d{8}[A-Za-z]$/;
+    if (!dniRegex.test(dni)) {
+        window.alert('DNI: formato inválido. Debe ser 8 dígitos seguidos de una letra, sin espacios ni guiones');
+        erroresP2++;
+    }
+
+    // Si hubo errores en las validaciones de la Página 2, no avanzamos
+    if (erroresP2 > 0) return;
     
     // Guardar en sessionStorage
     sessionStorage.setItem('nombre', nombre);
@@ -72,13 +108,37 @@ function guardarResidencia() {
         alert('⚠️ Por favor, rellena todos los campos');
         return;
     }
-    
+
+    // --- Validaciones Página 3 ---
+    // Validación Página 3 - Campos de localización ("direccion", "ciudad", "provincia"):
+    // sólo letras y espacios (sin números ni caracteres especiales)
+    const letrasEspaciosRegexLoc = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
+    let erroresP3 = 0;
+
+    if (!letrasEspaciosRegexLoc.test(direccion)) {
+        window.alert('Dirección: sólo se permiten letras y espacios');
+        erroresP3++;
+    }
+
+    if (!letrasEspaciosRegexLoc.test(ciudad)) {
+        window.alert('Ciudad: sólo se permiten letras y espacios');
+        erroresP3++;
+    }
+
+    if (!letrasEspaciosRegexLoc.test(provincia)) {
+        window.alert('Provincia: sólo se permiten letras y espacios');
+        erroresP3++;
+    }
+
+    // Si hubo errores en las validaciones de la Página 3, no avanzamos
+    if (erroresP3 > 0) return;
+
     // Guardar
     sessionStorage.setItem('direccion', direccion);
     sessionStorage.setItem('ciudad', ciudad);
     sessionStorage.setItem('provincia', provincia);
     sessionStorage.setItem('codigo_postal', codigo_postal);
-    
+
     // Ir a la siguiente página
     window.location.href = '/registro4';
 }
@@ -108,6 +168,14 @@ async function enviarRegistro() {
     // Validar que contraseña tenga mínimo 6 caracteres
     if (password.length < 6) {
         alert('⚠️ La contraseña debe tener mínimo 6 caracteres');
+        return;
+    }
+
+    // --- Validaciones Página 4 ---
+    // Validación Página 4 - Campo "telefono": exactamente 9 dígitos, solo números, sin espacios ni guiones
+    const telefonoRegex = /^\d{9}$/;
+    if (!telefonoRegex.test(telefono)) {
+        window.alert('Teléfono: debe contener exactamente 9 dígitos, sin espacios ni guiones');
         return;
     }
     
