@@ -4,6 +4,123 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="../images/logo.png" />
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Estilos específicos para mas_informacion.html */
+        main.contenido h2 {
+            color: rgb(36, 64, 108);
+            margin-bottom: 20px;
+            margin-top: 50px;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        .titulo-novedades {
+            margin-bottom: 50px !important;
+            padding-bottom: 20px !important;
+            border-bottom: 1px solid rgb(200, 200, 205) !important;
+            text-align: center !important;
+            width: 100% !important;
+        }
+
+        main.contenido p {
+            font-size: 20px;
+            color: black;
+            margin: 0 auto 16px auto;
+            max-width: 800px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .mi-contacto {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            padding: 30px;
+            background-color: rgb(255, 255, 255);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .mi-contacto.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mi-seccion {
+            background-color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .mi-seccion h3 {
+            color: rgb(36, 64, 108);
+            margin-bottom: 20px;
+            margin-top: 10px;
+            font-size: 28px;
+            width: 100%;
+        }
+
+        .mi-seccion details {
+            font-size: 18px;
+            margin: 10px 0;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .mi-seccion summary {
+            text-align: center;
+        }
+
+        .mi-seccion iframe {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .mi-contacto .mi-seccion:last-of-type,
+        .mi-contacto button {
+            grid-column: span 2;
+        }
+
+        .mi-contacto button {
+            justify-self: center;
+            background-color: rgb(51, 90, 153);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 12px 40px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: block;
+        }
+
+        .mi-contacto button:hover {
+            box-shadow: 0 4px 12px rgb(170, 170, 170);
+            transform: scale(1.02);
+        }
+
+        .reclamacion-textarea {
+            width: 60%;
+            max-width: 700px;
+            min-width: 280px;
+            display: block;
+            margin: 12px auto;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+    </style>
     <title>Más Información - Capitalia</title>
 </head>
 <body>
@@ -24,24 +141,23 @@
     <script src="/js/main.js"></script>
     <main class="contenido">
             <h2 class="titulo-novedades">Más Información</h2>
-            <div class="contacto visible">
-                <div class="seccion_inf" style="text-align: center;">
+            <div class="mi-contacto visible">
+                <div class="mi-seccion">
                     <h3>¿Dónde nos encontramos?</h3>
                     <p>Calle Financiera 25, 28000, Madrid, España</p>
                     <iframe src="https://www.google.com/maps?q=Calle+Financiera+25,+28000,+Madrid,+España&output=embed" width="100%" height="300" loading="lazy"></iframe>
                 </div>
-                </div>
-                <div class="seccion_inf" style="text-align: center;">
+                <div class="mi-seccion">
                     <h3>Contacta con nosotros</h3>
                     <p>Email: soporte@capitalia.es</p>
                     <p>Teléfono: +34 600 123 456</p>
                 </div>
-                <div class="seccion_inf" style="text-align: center;">
+                <div class="mi-seccion">
                     <h3>Nuestro Horario de Atención</h3>
                     <p>Atención presencial: Lunes a Viernes de 9:00 a 14:00</p>
                     <p>Atención telefónica: Lunes a Viernes de 8:00 a 18:00</p>
                 </div>
-                <div class="seccion_inf" style="text-align: center;">
+                <div class="mi-seccion">
                     <h3>Preguntas Frecuentes</h3>
                     <details>
                         <summary>¿Cómo puedo abrir una cuenta?</summary>
@@ -56,7 +172,7 @@
                         <p>Puedes llamar al +34 600 123 456 o enviar un correo a soporte@capitalia.es.</p>
                     </details>
                 </div>
-                <div class="seccion_inf" style="text-align: center;">
+                <div class="mi-seccion">
                     <h3>Reclamaciones</h3>
                     <p>Escribe tu reclamación:</p>
                     <textarea class="reclamacion-textarea" rows="5" cols="50"></textarea>
