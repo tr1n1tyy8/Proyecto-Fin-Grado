@@ -130,6 +130,13 @@ function guardarResidencia() {
         erroresP3++;
     }
 
+    // Validación Página 3 - Campo "codigo_postal": exactamente 5 números
+    const codigoPostalRegex = /^\d{5}$/;
+    if (!codigoPostalRegex.test(codigo_postal)) {
+        window.alert('Código postal: debe contener exactamente 5 números');
+        erroresP3++;
+    }
+
     // Si hubo errores en las validaciones de la Página 3, no avanzamos
     if (erroresP3 > 0) return;
 
