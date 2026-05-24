@@ -131,7 +131,7 @@ function mostrarTransacciones(transacciones) {
         return;
     }
     
-    let html = '<h3>📊 Tus movimientos</h3>';
+    let html = '<h3>Tus últimos movimientos</h3>';
     html += '<div class="lista-transacciones">';
     
     const usuarioActual = localStorage.getItem('email');

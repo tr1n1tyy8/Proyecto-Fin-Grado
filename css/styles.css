@@ -1111,12 +1111,11 @@
         border-radius: 8px;
         background-color: rgb(245, 245, 248);
         border-left: 4px solid rgb(51, 90, 153);
-        transition: all 0.3s ease;
+        transition: background-color 0.3s ease;
     }
 
     .transaccion-item:hover {
         background-color: rgb(235, 235, 242);
-        transform: translateX(5px);
     }
 
     .transaccion-item.transaccion-envio {
@@ -1513,5 +1512,39 @@
         color: #1A73E8;
         font-weight: bold;
         font-size: 1.1rem;
+    }
+
+    /* Estilos específicos para frontend/mas_informacion.html */
+    main.contenido {
+        text-align: center;
+    }
+
+    main.contenido h1,
+    main.contenido h2,
+    main.contenido h3,
+    main.contenido p,
+    main.contenido details,
+    main.contenido summary {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Reclamaciones: textarea no ocupa todo el ancho y está centrada */
+    .reclamacion-textarea {
+        width: 60%;
+        max-width: 700px;
+        min-width: 280px;
+        display: block;
+        margin: 12px auto;
+        padding: 10px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    /* Asegurar que el botón "Enviar" usa estilos existentes y queda centrado */
+    .mas-info-boton {
+        margin: 14px auto;
+        display: block;
     }
 }
