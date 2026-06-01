@@ -1,36 +1,25 @@
-// ============================================================================
 // SCRIPT PARA ENLAZAR FORMULARIO DE REGISTRO CON LA BASE DE DATOS
-// ============================================================================
-// Este archivo maneja:
-// 1. Guardar datos conforme rellenas cada página
-// 2. Validar que las contraseñas coincidan
-// 3. Enviar todo a la API cuando das a "Confirmar"
-// ============================================================================
 
-// ============================================================================
-// PASO 1: GUARDAR SITUACIÓN LABORAL (Página 1)
-// ============================================================================
-
+// GUARDAR SITUACIÓN LABORAL (Página 1)
 function guardarSituacionLaboral() {
     const situacion = document.getElementById('situacion_laboral').value;
     
     // Validar que seleccionó algo
     if (!situacion) {
-        alert('⚠️ Por favor, selecciona tu situación laboral');
+        alert('Por favor, selecciona tu situación laboral');
         return;
     }
     
-    // Guardar en sessionStorage (memoria temporal del navegador)
+    // Guardar en la memoria temporal del navegador
     sessionStorage.setItem('situacion_laboral', situacion);
     
     // Ir a la siguiente página
     window.location.href = '/registro2';
 }
 
-// ============================================================================
-// PASO 2: GUARDAR DATOS PERSONALES (Página 2)
-// ============================================================================
+// GUARDAR DATOS PERSONALES (Página 2)
 function guardarPersonales() {
+
     // Recoger todos los datos del formulario
     const nombre = document.getElementById('nombre').value;
     const apellidos = document.getElementById('apellidos').value;
@@ -41,12 +30,11 @@ function guardarPersonales() {
     
     // Validar que todos los campos estén rellenos
     if (!nombre || !apellidos || !fecha_nacimiento || !dni || !pais_residencia || !nacionalidad) {
-        alert('⚠️ Por favor, rellena todos los campos');
+        alert('Por favor, rellena todos los campos');
         return;
     }
 
-    // --- Validaciones Página 2 ---
-    // Validación Página 2 - Campos "nombre", "apellidos", "nacionalidad" y "pais_residencia":
+    // Validación Página 2: Campos "nombre", "apellidos", "nacionalidad" y "pais_residencia":
     // sólo letras y espacios (sin números ni caracteres especiales)
     const letrasEspaciosRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
     let erroresP2 = 0;
@@ -71,7 +59,7 @@ function guardarPersonales() {
         erroresP2++;
     }
 
-    // Validación Página 2 - Campo "dni": formato español estándar (8 dígitos + letra)
+    // Validación Página 2: Campo dni (8 dígitos + letra)
     const dniRegex = /^\d{8}[A-Za-z]$/;
     if (!dniRegex.test(dni)) {
         window.alert('DNI: formato inválido. Debe ser 8 dígitos seguidos de una letra, sin espacios ni guiones');
@@ -93,10 +81,9 @@ function guardarPersonales() {
     window.location.href = '/registro3';
 }
 
-// ============================================================================
-// PASO 3: GUARDAR RESIDENCIA (Página 3)
-// ============================================================================
+// GUARDAR RESIDENCIA (Página 3)
 function guardarResidencia() {
+
     // Recoger datos
     const direccion = document.getElementById('direccion').value;
     const ciudad = document.getElementById('ciudad').value;
@@ -105,12 +92,11 @@ function guardarResidencia() {
     
     // Validar
     if (!direccion || !ciudad || !provincia || !codigo_postal) {
-        alert('⚠️ Por favor, rellena todos los campos');
+        alert('Por favor, rellena todos los campos');
         return;
     }
 
-    // --- Validaciones Página 3 ---
-    // Validación Página 3 - Campos de localización ("direccion", "ciudad", "provincia"):
+    // Validación Página 3: Campos de localización (direccion, ciudad, provincia):
     // sólo letras y espacios (sin números ni caracteres especiales)
     const letrasEspaciosRegexLoc = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
     let erroresP3 = 0;
@@ -130,7 +116,7 @@ function guardarResidencia() {
         erroresP3++;
     }
 
-    // Validación Página 3 - Campo "codigo_postal": exactamente 5 números
+    // Validación Página 3: Campo codigo postal (5 números)
     const codigoPostalRegex = /^\d{5}$/;
     if (!codigoPostalRegex.test(codigo_postal)) {
         window.alert('Código postal: debe contener exactamente 5 números');
@@ -150,10 +136,10 @@ function guardarResidencia() {
     window.location.href = '/registro4';
 }
 
-// ============================================================================
-// PASO 4: ENVIAR TODO A LA API (Página 4 - Confirmar)
-// ============================================================================
+// ENVIAR TODO A LA API (Página 4)
+
 async function enviarRegistro() {
+
     // Recoger datos de página 4
     const email = document.getElementById('email').value;
     const telefono = document.getElementById('telefono').value;
@@ -162,24 +148,23 @@ async function enviarRegistro() {
     
     // Validar página 4
     if (!email || !telefono || !password || !password_confirm) {
-        alert('⚠️ Por favor, rellena todos los campos');
+        alert('Por favor, rellena todos los campos');
         return;
     }
     
     // Validar que las contraseñas coincidan
     if (password !== password_confirm) {
-        alert('⚠️ Las contraseñas no coinciden');
+        alert('Las contraseñas no coinciden');
         return;
     }
     
     // Validar que contraseña tenga mínimo 6 caracteres
     if (password.length < 6) {
-        alert('⚠️ La contraseña debe tener mínimo 6 caracteres');
+        alert('La contraseña debe tener mínimo 6 caracteres');
         return;
     }
 
-    // --- Validaciones Página 4 ---
-    // Validación Página 4 - Campo "telefono": exactamente 9 dígitos, solo números, sin espacios ni guiones
+    // Validación Página 4: Campo telefono (9 dígitos, solo números, sin espacios ni guiones)
     const telefonoRegex = /^\d{9}$/;
     if (!telefonoRegex.test(telefono)) {
         window.alert('Teléfono: debe contener exactamente 9 dígitos, sin espacios ni guiones');
@@ -201,16 +186,15 @@ async function enviarRegistro() {
     
     // Validar que todas las páginas anteriores están completas
     if (!situacion_laboral || !nombre || !apellidos || !fecha_nacimiento || !dni) {
-        alert('⚠️ Parece que falta completar alguna página anterior. Por favor, vuelve a empezar.');
+        alert('Parece que falta completar alguna página anterior. Por favor, vuelve a empezar.');
         return;
     }
     
     // Preparar los datos para enviar a la API
-    // Nota: La API espera YYYY-MM-DD, el date input ya lo da en ese formato
     const datosCompletos = {
         nombre: nombre,
         apellidos: apellidos,
-        fecha_nacimiento: fecha_nacimiento,  // Ya viene en formato YYYY-MM-DD del input date
+        fecha_nacimiento: fecha_nacimiento,
         dni: dni,
         telefono: telefono,
         email: email,
@@ -224,9 +208,10 @@ async function enviarRegistro() {
         password: password
     };
     
-    console.log('📤 Enviando datos a la API:', datosCompletos);
+    console.log('Enviando datos a la API:', datosCompletos);
     
     try {
+
         // Enviar POST a /register
         const respuesta = await fetch(API_URL + '/registro', {
             method: 'POST',
@@ -240,8 +225,8 @@ async function enviarRegistro() {
         const datos = await respuesta.json();
         
         if (respuesta.ok) {
-            // ✅ Registro exitoso
-            alert('✅ ¡Registro exitoso! Bienvenido/a a Capitalia');
+            // Registro exitoso
+            alert('¡Te has registrado con éxito! Bienvenido/a a Capitalia');
             
             // Limpiar sessionStorage
             sessionStorage.clear();
@@ -249,23 +234,21 @@ async function enviarRegistro() {
             // Ir al dashboard
             window.location.href = '/dashboard';
         } else {
-            // ❌ Error en la API
-            alert('❌ Error al registrarse: ' + (datos.detail || 'Error desconocido'));
+            // Error en la API
+            alert('Error al registrarse: ' + (datos.detail || 'Error desconocido'));
             console.error('Error:', datos);
         }
     } catch (error) {
-        // ❌ Error de conexión
-        alert('❌ Error de conexión: ' + error.message);
+        // Error de conexión
+        alert('Error de conexión: ' + error.message);
         console.error('Error:', error);
     }
 }
 
-// ============================================================================
-// CARGAR DATOS SI VUELVES A UNA PÁGINA ANTERIOR
-// ============================================================================
-// Cuando recargas una página, rellena los campos con lo que guardaste antes
+// CARGAR DATOS SI VUELVES A UNA PÁGINA ANTERIOR (cuando recargas una página, rellena los campos con lo que se guardó antes)
 
 window.addEventListener('DOMContentLoaded', function() {
+
     // En registro2.html
     if (document.getElementById('nombre')) {
         const nombre = sessionStorage.getItem('nombre');
@@ -308,5 +291,3 @@ window.addEventListener('DOMContentLoaded', function() {
         if (situacion) document.getElementById('situacion_laboral').value = situacion;
     }
 });
-
-// ============================================================================

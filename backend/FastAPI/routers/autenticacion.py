@@ -1,12 +1,4 @@
-# ============================================================================
 # AUTENTICACIÓN SEGURA CON JWT Y BASE DE DATOS
-# ============================================================================
-# Este módulo gestiona:
-# 1. Registro de nuevos usuarios (POST /register)
-# 2. Login con JWT (POST /login)
-# 3. Obtener usuario autenticado (GET /users/me)
-# 4. Protección de rutas con OAuth2PasswordBearer
-# ============================================================================
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -21,14 +13,12 @@ from ..bbdd import get_db
 from ..models import Cliente, InitioSesion
 from ..schemas import ClienteRegistro, ClienteResponse, Token, ClienteActualizarCompleto
 
-# ============================================================================
 # CONFIGURACIÓN DE SEGURIDAD
-# ============================================================================
 
 ALGORITHM = "HS256"
-ACCESS_TOKEN_DURATION = 30  # Subido a 30 min para que no se te cierre la sesión tan rápido probando
+ACCESS_TOKEN_DURATION = 30 # minutos
 
-SECRET = os.getenv("JWT_SECRET", "change-this-in-production")
+SECRET = os.getenv("JWT_SECRET", "change-this-in-production")   # genera una clave
 
 # Contexto de cifrado con bcrypt
 crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -38,16 +28,15 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 router = APIRouter(tags=["autenticación"])
 
-# ============================================================================
+
 # FUNCIONES AUXILIARES DE SEGURIDAD
-# ============================================================================
 
 def hash_password(password: str) -> str:
-    """Convierte texto plano en un hash seguro"""
+    # Convierte texto plano en un hash seguro
     return crypt.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Compara la contraseña del login con el hash de la BD"""
+    # Compara la contraseña del login con el hash de la BD
     return crypt.verify(plain_password, hashed_password)
 
 def create_access_token(email: str) -> str:
@@ -58,9 +47,8 @@ def create_access_token(email: str) -> str:
     token = jwt.encode(payload, SECRET, algorithm=ALGORITHM)
     return token
 
-# ============================================================================
+
 # DEPENDENCIAS (PARA PROTEGER RUTAS)
-# ============================================================================
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -86,27 +74,25 @@ async def get_current_user(
     
     return user
 
-# ============================================================================
+
 # RUTAS DE AUTENTICACIÓN
-# ============================================================================
 
 @router.post("/registro", response_model=ClienteResponse, status_code=201)
 async def register(
     client: ClienteRegistro,
     db: Session = Depends(get_db)
 ):
-    # ✓ VALIDACIONES DE EXISTENCIA
+    # VALIDACIONES DE EXISTENCIA
     if db.query(Cliente).filter(Cliente.email == client.email).first():
         raise HTTPException(status_code=400, detail="Este email ya está registrado")
     
     if db.query(Cliente).filter(Cliente.dni == client.dni).first():
         raise HTTPException(status_code=400, detail="Este DNI ya está registrado")
 
-    # ✓ PROCESAR FECHA
-    # Pydantic ya convierte el string a date, solo necesitamos convertirlo a datetime
-    fecha_nac = datetime.combine(client.fecha_nacimiento, datetime.min.time())
+    # PROCESAR FECHA
+    fecha_nac = datetime.combine(client.fecha_nacimiento, datetime.min.time()) # Pydantic ya convierte el string a date, solo necesitamos convertirlo a datetime
     
-    # ✓ CREAR CLIENTE CON CONTRASEÑA HASHEADA
+    # CREAR CLIENTE CON CONTRASEÑA HASHEADA
     nuevo_cliente = Cliente(
         nombre=client.nombre,
         apellidos=client.apellidos,
@@ -122,7 +108,7 @@ async def register(
         pais_residencia=client.pais_residencia,
         situacion_laboral=client.situacion_laboral,
         saldo=0.00,
-        # AQUÍ ESTÁ LA MAGIA: Hasheamos la contraseña que viene del Pydantic
+
         password=hash_password(client.password) 
     )
     
@@ -169,7 +155,6 @@ async def get_usuario_por_email(
     user: Cliente = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Obtiene los datos de un usuario por su email (requiere estar autenticado)"""
     # Solo permite obtener datos del usuario autenticado
     if user.email != email:
         raise HTTPException(
@@ -185,21 +170,12 @@ async def obtener_ultimos_inicios_sesion(
     user: Cliente = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    GET /inicios-sesion/ultimos - Obtener los 5 últimos inicios de sesión del usuario autenticado.
-    
-    ⚠️ PROTEGIDA: Requiere JWT token
-    
-    Returns:
-        Lista de hasta 5 diccionarios con fecha_hora de los inicios de sesión
-    """
-    
+
     # Obtener los 5 últimos inicios de sesión del usuario autenticado
     inicios = db.query(InitioSesion).filter(
         InitioSesion.id_cliente == user.id
     ).order_by(InitioSesion.fecha_hora.desc()).limit(5).all()
     
-    # Convertir a lista de diccionarios
     resultado = [
         {"fecha_hora": inicio.fecha_hora}
         for inicio in inicios
@@ -215,42 +191,18 @@ async def actualizar_usuario(
     user: Cliente = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    PUT /usuarios/actualizar/{email} - Actualizar datos de un usuario.
-    
-    ⚠️ PROTEGIDA: Requiere JWT token
-    ⚠️ AUTORIZACIÓN: Solo el usuario autenticado puede editar su propio perfil
-    
-    Campos que se actualizan:
-    - nombre, apellidos, telefono, fecha_nacimiento
-    - nacionalidad, direccion, provincia, ciudad
-    - codigo_postal, pais_residencia, situacion_laboral
-    
-    Campos PROTEGIDOS (no se pueden cambiar):
-    - email, dni, saldo, password
-    
-    Args:
-        email: Email del usuario a actualizar (debe coincidir con usuario autenticado)
-        datos: Schema ClienteActualizarCompleto con los datos a actualizar
-        user: Usuario autenticado (obtenido de JWT)
-        db: Sesión de base de datos
-    
-    Returns:
-        ClienteResponse con los datos actualizados
-    """
-    
-    # ✓ VERIFICAR PERMISO: Solo puede editar su propio perfil
+
+    # VERIFICAR PERMISO: Solo puede editar su propio perfil
     if user.email != email:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes permiso para editar este usuario"
         )
     
-    # ✓ ACTUALIZAR CAMPOS
+    # ACTUALIZAR CAMPOS
     user.nombre = datos.nombre
     user.apellidos = datos.apellidos
     user.telefono = datos.telefono
-    # Convertir date a datetime
     user.fecha_nacimiento = datetime.combine(datos.fecha_nacimiento, datetime.min.time())
     user.nacionalidad = datos.nacionalidad
     user.direccion = datos.direccion
@@ -260,15 +212,8 @@ async def actualizar_usuario(
     user.pais_residencia = datos.pais_residencia
     user.situacion_laboral = datos.situacion_laboral
     
-    # ✓ GUARDAR CAMBIOS
+    # GUARDAR CAMBIOS
     db.commit()
     db.refresh(user)
     
     return user
-
-
-
-
-
-
-

@@ -5,9 +5,7 @@
         box-sizing: border-box;
     }
 
-    /* ========================================================================
-       ESTILOS DE MENSAJES DE ERROR INLINE
-       ======================================================================== */
+    /* ESTILOS DE MENSAJES DE ERROR INLINE */
     .error-mensaje {
         display: none;
         color: #dc3545;
@@ -472,8 +470,6 @@
 
     /*ESTILOS PARA LA PÁGINA CONTACTO.HTML*/
 
-    /*ESTILOS PARA LA PÁGINA CONTACTO.HTML CORREGIDOS*/
-
     .contacto {
         width: 90%; /* Aumentado para dar más aire */
         max-width: 1200px;
@@ -557,7 +553,6 @@
         box-shadow: 0 4px 12px rgb(170, 170, 170);
         transform: scale(1.02);
     }
-
 
 
     /*ESTILOS PARA LA PÁGINA REGISTRO.HTML*/
@@ -830,9 +825,8 @@
         font-size: 50px;
     }
 
-/* ============================================================================ */
+
 /* ESTILOS PARA LA PÁGINA BIZUM.HTML */
-/* ============================================================================ */
 
     .contenido-bizum {
         flex: 1;
@@ -1051,9 +1045,8 @@
         }
     }
 
-/* ============================================================================ */
+
 /* ESTILOS PARA LA PÁGINA DASHBOARD.HTML - TRANSACCIONES */
-/* ============================================================================ */
 
     .contenido {
         flex: 1;
@@ -1182,9 +1175,8 @@
         }
     }
 
-/* ============================================================================ */
+
 /* ESTILOS PARA LA PÁGINA AVISOS.HTML - INICIOS DE SESIÓN */
-/* ============================================================================ */
 
     .inicios-sesion-container {
         background: white;
@@ -1252,9 +1244,8 @@
         font-size: 14px;
     }
 
-/* ============================================================================ */
+
 /* ESTILOS PARA LA PÁGINA INFORMACION.HTML */
-/* ============================================================================ */
 
     .contenido-informacion {
         flex: 1;
@@ -1389,9 +1380,8 @@
         background-color: #777;
     }
 
-    /* ========================================================================
-       ESTILOS PÁGINA MAS_INFORMACION
-       ======================================================================== */
+
+    /* ESTILOS PÁGINA MAS_INFORMACION */
     .contenido-informacion {
         max-width: 900px;
         margin: 40px auto;
@@ -1530,7 +1520,6 @@
         margin-right: auto;
     }
 
-    /* Reclamaciones: textarea no ocupa todo el ancho y está centrada */
     .reclamacion-textarea {
         width: 60%;
         max-width: 700px;

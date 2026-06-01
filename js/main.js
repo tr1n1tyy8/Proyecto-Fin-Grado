@@ -1,6 +1,5 @@
-// ============================================================================
-// PROTECCIÓN DE RUTAS - Verificar autenticación antes de acceder
-// ============================================================================
+// PROTECCIÓN DE RUTAS: Verificar autenticación antes de acceder
+
 function protegerRuta() {
     const rutasProtegidas = ['/dashboard', '/bizum', '/avisos', '/informacion'];
     const rutaActual = window.location.pathname;
@@ -14,10 +13,10 @@ function protegerRuta() {
         
         if (!token) {
             // No hay token, redirigir a login
-            console.warn('⚠️ Acceso denegado: no hay token. Redirigiendo a login...');
+            console.warn('Acceso denegado: no hay token. Redirigiendo a login...');
             window.location.href = '/acceso';
         } else {
-            console.log('✅ Token verificado, acceso permitido');
+            console.log('Token verificado, acceso permitido');
         }
     }
 }
@@ -26,7 +25,6 @@ function protegerRuta() {
 document.addEventListener('DOMContentLoaded', protegerRuta);
 
 // Intersection Observer para detectar cuando los apartados entran en vista
-
 const API_URL = window.location.origin;
 
 const observerOptions = {

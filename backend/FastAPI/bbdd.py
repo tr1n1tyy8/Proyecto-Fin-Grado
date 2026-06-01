@@ -1,9 +1,4 @@
-# ============================================================================
 # CONFIGURACIÓN DE LA BASE DE DATOS CON SQLALCHEMY
-# ============================================================================
-# Este archivo establece la conexión con MySQL usando SQLAlchemy como ORM.
-# ORM = Object Relational Mapping (mapeo de objetos a tablas SQL)
-# ============================================================================
 
 import os
 from dotenv import load_dotenv
@@ -15,7 +10,6 @@ from sqlalchemy.orm import sessionmaker
 load_dotenv()
 
 # Obtenemos la URL de la BD desde variables de entorno
-# En local se mantiene un fallback, pero en Vercel debe configurarse DATABASE_URL.
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "mysql+pymysql://root:@localhost:3306/proyecto_fin_grado",
@@ -25,7 +19,6 @@ DATABASE_URL = os.getenv(
 DB_SSL_DISABLED = os.getenv("DB_SSL_DISABLED", "false").lower() == "true"
 
 # Creamos el motor de conexión
-# pool_pre_ping/pool_recycle ayudan en entornos serverless con conexiones cortadas.
 engine_kwargs = {
     "echo": False,
     "pool_pre_ping": True,

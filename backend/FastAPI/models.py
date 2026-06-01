@@ -1,23 +1,14 @@
-# ============================================================================
-# MODELOS SQLALCHEMY - DEFINICIÓN DE TABLAS
-# ============================================================================
-# Estos modelos definen la estructura de las tablas en la base de datos.
-# SQLAlchemy convierte estas clases en tablas SQL automáticamente.
-# ============================================================================
+# MODELOS SQLALCHEMY (definir la estructura de las tablas en la base de datos)
 
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .bbdd import Base
 
-# MODELO 1: CLIENTE (Usuario del banco)
-# =====================================================
+# MODELO 1: CLIENTE
+
 class Cliente(Base):
-    """
-    Tabla 'clientes' - Información de cada usuario del banco.
-    Estructura adaptada a la tabla existente en proyecto_fin_grado.
-    """
-    
+
     __tablename__ = "clientes"
     
     # COLUMNAS (coinciden exactamente con la tabla clientes en la BD)
@@ -40,7 +31,6 @@ class Cliente(Base):
     password = Column(String(255), nullable=False)
     
     # RELACIÓN CON TRANSACCIONES
-    # backreference = permite acceder a las transacciones del cliente directamente
     transacciones_enviadas = relationship(
         "Transaccion",
         foreign_keys="Transaccion.id_emisor",
@@ -60,19 +50,19 @@ class Cliente(Base):
 
 
 # MODELO 2: TRANSACCIÓN (Bizum)
-# =====================================================
+
 class Transaccion(Base):
     __tablename__ = "transacciones"
     
     # COLUMNAS
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    id_emisor = Column(Integer, ForeignKey("clientes.id"), nullable=False)  # Foreign Key = referencia a clientes.id
+    id_emisor = Column(Integer, ForeignKey("clientes.id"), nullable=False)
     id_receptor = Column(Integer, ForeignKey("clientes.id"), nullable=False)
     cantidad = Column(Float, nullable=False)
-    concepto = Column(String(255), nullable=True)  # Opcional: "Bizum para café"
+    concepto = Column(String(255), nullable=True) # Opcional
     fecha = Column(DateTime, default=datetime.utcnow, nullable=False)
     
-    # RELACIONES (para acceder fácilmente a los datos del emisor/receptor)
+    # RELACIONES (para acceder a los datos del emisor/receptor)
     emisor = relationship(
         "Cliente",
         foreign_keys=[id_emisor],
@@ -86,22 +76,13 @@ class Transaccion(Base):
     )
     
     def __repr__(self):
-        """Representación útil para debugging"""
         return f"<Transaccion(id={self.id}, emisor={self.id_emisor}, receptor={self.id_receptor}, cantidad={self.cantidad})>"
 
 
 # MODELO 3: INICIO DE SESIÓN
-# =====================================================
+
 class InitioSesion(Base):
-    """
-    Tabla 'inicios_sesion' - Registro de todos los inicios de sesión de los usuarios.
-    
-    Campos:
-    - id: Identificador único del registro
-    - id_cliente: Cliente que inició sesión (Foreign Key a clientes.id)
-    - fecha_hora: Cuándo se hizo el login
-    """
-    
+
     __tablename__ = "inicios_sesion"
     
     # COLUMNAS
@@ -116,5 +97,4 @@ class InitioSesion(Base):
     )
     
     def __repr__(self):
-        """Representación útil para debugging"""
         return f"<InitioSesion(id={self.id}, id_cliente={self.id_cliente}, fecha_hora={self.fecha_hora})>"

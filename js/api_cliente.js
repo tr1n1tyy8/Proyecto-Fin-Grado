@@ -1,28 +1,24 @@
-// ====================================
-// API CLIENT - Funciones principales
-// ====================================
-// Este archivo tiene todas las funciones para comunicarse con el backend.
-// Solo copia y pega el código de FRONTEND-INTEGRATION.md para usarlas.
-// ====================================
+// API CLIENT (funciones para comunicarse con el backend)
 
 // Dirección de la API (misma URL donde corre el frontend/back en Vercel)
 const API_URL = window.location.origin;
 
-// ====================================
 // HELPERS (funciones internas)
-// ====================================
 
 function obtenerToken() {
+
   // Lee el token guardado del navegador
   return localStorage.getItem("token");
 }
 
 function guardarToken(token) {
+
   // Guarda el token en el navegador para no perder sesión
   localStorage.setItem("token", token);
 }
 
 function eliminarToken() {
+
   // Borra el token cuando haces logout
   localStorage.removeItem("token");
 }
@@ -57,12 +53,10 @@ async function peticionAutenticada(endpoint, metodo = "GET", datos = null) {
   return await respuesta.json();
 }
 
-// ====================================
-// TUS FUNCIONES (que usarás en HTML)
-// ====================================
 // REGISTRAR
 
 async function registrar(datos) {
+  
   // datos = {nombre, email, dni, telefono, password}
   const respuesta = await fetch(`${API_URL}/register`, {
     method: "POST",

@@ -1,12 +1,10 @@
-// ============================================================================
 // SCRIPT PARA INFORMACIÓN DEL USUARIO - MOSTRAR Y EDITAR DATOS
-// ============================================================================
 
 async function cargarInformacionUsuario() {
-    console.log('👤 Cargando información del usuario...');
+    console.log('Cargando información del usuario...');
     
     if (!estaAutenticado()) {
-        console.log('⚠️ No autenticado');
+        console.log('No autenticado');
         return;
     }
     
@@ -24,28 +22,27 @@ async function cargarInformacionUsuario() {
         
         if (respuesta.ok) {
             const usuario = await respuesta.json();
-            console.log('✅ Usuario cargado:', usuario);
+            console.log('Usuario cargado:', usuario);
             mostrarInformacionUsuario(usuario);
         } else if (respuesta.status === 401) {
-            console.log('⚠️ Sesión expirada');
+            console.log('Sesión expirada');
             localStorage.removeItem('token');
             window.location.href = '/acceso';
         } else {
-            console.error('❌ Error al cargar usuario');
+            console.error('Error al cargar usuario');
         }
     } catch (error) {
-        console.error('❌ Error de conexión:', error);
+        console.error('Error de conexión:', error);
     }
 }
 
-// ============================================================================
 // MOSTRAR INFORMACIÓN DEL USUARIO
-// ============================================================================
+
 function mostrarInformacionUsuario(usuario) {
     const divDatos = document.getElementById('datos-usuario');
     
     if (!divDatos) {
-        console.error('❌ No se encontró el div #datos-usuario');
+        console.error('No se encontró el div #datos-usuario');
         return;
     }
     
@@ -109,8 +106,8 @@ function mostrarInformacionUsuario(usuario) {
         <div class="botones-informacion">
             <button type="button" class="btn-editar" onclick="habilitarEdicion()" id="btn-editar">Editar Datos</button>
             <div class="botones-edicion" style="display: none;" id="botones-edicion">
-                <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
-                <button type="button" class="btn-cancelar" onclick="cancelarEdicion()">❌ Cancelar</button>
+                <button type="submit" class="btn-guardar">Guardar Cambios</button>
+                <button type="button" class="btn-cancelar" onclick="cancelarEdicion()">Cancelar</button>
             </div>
         </div>
     `;
@@ -122,12 +119,11 @@ function mostrarInformacionUsuario(usuario) {
     // Agregar listener al formulario
     document.getElementById('formulario-informacion').addEventListener('submit', guardarCambios);
     
-    console.log('✅ Información mostrada');
+    console.log('Información mostrada');
 }
 
-// ============================================================================
 // HABILITAR EDICIÓN
-// ============================================================================
+
 function habilitarEdicion() {
     const inputs = document.querySelectorAll('.input-informacion:not([readonly])');
     const btnEditar = document.getElementById('btn-editar');
@@ -144,9 +140,8 @@ function habilitarEdicion() {
     console.log('✏️ Modo edición habilitado');
 }
 
-// ============================================================================
 // CANCELAR EDICIÓN
-// ============================================================================
+
 function cancelarEdicion() {
     const inputs = document.querySelectorAll('.input-informacion');
     const btnEditar = document.getElementById('btn-editar');
@@ -166,19 +161,18 @@ function cancelarEdicion() {
     // Limpiar mensajes de error
     document.querySelectorAll('.error-mensaje').forEach(msg => msg.textContent = '');
     
-    console.log('❌ Edición cancelada');
+    console.log('Edición cancelada');
 }
 
-// ============================================================================
 // GUARDAR CAMBIOS
-// ============================================================================
+
 async function guardarCambios(event) {
     event.preventDefault();
     
-    console.log('💾 Guardando cambios...');
+    console.log('Guardando cambios...');
     
     if (!estaAutenticado()) {
-        alert('⚠️ Sesión expirada');
+        alert('Sesión expirada');
         return;
     }
     
@@ -219,28 +213,27 @@ async function guardarCambios(event) {
         
         if (respuesta.ok) {
             const usuarioActualizado = await respuesta.json();
-            console.log('✅ Datos actualizados:', usuarioActualizado);
+            console.log('Datos actualizados:', usuarioActualizado);
             
             // Actualizar la visualización
             mostrarInformacionUsuario(usuarioActualizado);
-            alert('✅ Datos actualizados correctamente');
+            alert('Datos actualizados correctamente');
         } else if (respuesta.status === 401) {
-            alert('⚠️ Sesión expirada');
+            alert('Sesión expirada');
             localStorage.removeItem('token');
             window.location.href = '/acceso';
         } else {
             const error = await respuesta.json();
-            alert('❌ Error: ' + error.detail);
+            alert('Error: ' + error.detail);
         }
     } catch (error) {
-        console.error('❌ Error de conexión:', error);
-        alert('❌ Error al guardar los datos');
+        console.error('Error de conexión:', error);
+        alert('Error al guardar los datos');
     }
 }
 
-// ============================================================================
 // VALIDAR DATOS
-// ============================================================================
+
 function validarDatos(datos) {
     const errores = {};
     
@@ -282,9 +275,8 @@ function validarDatos(datos) {
     return errores;
 }
 
-// ============================================================================
 // MOSTRAR ERRORES
-// ============================================================================
+
 function mostrarErrores(errores) {
     // Limpiar errores anteriores
     document.querySelectorAll('.error-mensaje').forEach(msg => msg.textContent = '');
@@ -293,17 +285,16 @@ function mostrarErrores(errores) {
     Object.keys(errores).forEach(campo => {
         const elemento = document.getElementById(`error-${campo}`);
         if (elemento) {
-            elemento.textContent = '⚠️ ' + errores[campo];
+            elemento.textContent = errores[campo];
         }
     });
 }
 
-// ============================================================================
 // CUANDO CARGA LA PÁGINA
-// ============================================================================
+
 window.addEventListener('DOMContentLoaded', function() {
     if (window.location.href.includes('/informacion')) {
-        console.log('👤 Página de información cargada');
+        console.log('Página de información cargada');
         
         setTimeout(() => {
             cargarInformacionUsuario();

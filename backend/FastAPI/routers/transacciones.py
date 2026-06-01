@@ -1,11 +1,4 @@
-# ============================================================================
 # TRANSACCIONES BANCARIAS - BIZUM
-# ============================================================================
-# Este módulo gestiona:
-# 1. POST /transferir - Realizar un Bizum (transferencia de dinero)
-# 2. GET /transacciones/{cliente_id} - Historial de movimientos
-# 3. Validaciones de saldo y seguridad
-# ============================================================================
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
@@ -22,9 +15,8 @@ router = APIRouter(
     responses={404: {"description": "Transacción no encontrada"}}
 )
 
-# ============================================================================
-# RUTA: POST /transferir - REALIZAR UN BIZUM
-# ============================================================================
+
+# RUTA: POST /transferir (hacer bizum)
 
 @router.post("/transferir", response_model=dict, status_code=201)
 async def transferir_bizum(
@@ -32,62 +24,36 @@ async def transferir_bizum(
     usuario_autenticado: Cliente = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    POST /transferir - Realizar una transferencia Bizum.
-    
-    ⚠️ PROTEGIDA: Requiere JWT token en Authorization header
-    
-    Lógica (OPERACIÓN ATÓMICA):
-    1. Validar que el usuario tiene saldo suficiente
-    2. Buscar al receptor por teléfono
-    3. Restar dinero al emisor (usuario autenticado)
-    4. Sumar dinero al receptor
-    5. Crear registro de transacción en el historial
-    6. Guardar todo en la BD
-    
-    Args:
-        transferencia: Datos del Bizum (cantidad, numero_receptor, concepto)
-        usuario_autenticado: Usuario que hace la transferencia (de Depends)
-        db: Sesión de BD
-    
-    Returns:
-        Confirmación de la transferencia
-    
-    Raises:
-        400: Emisor y receptor son la misma persona
-        400: Dinero insuficiente
-        404: Receptor no existe
-    """
-    
-    # ✓ VALIDACIÓN 1: No transferir a sí mismo
+
+    # VALIDACIÓN 1: No transferir a sí mismo
     if usuario_autenticado.telefono == transferencia.numero_receptor:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="No puedes transferir dinero a tu propia cuenta"
         )
     
-    # ✓ VALIDACIÓN 2: Cantidad válida (> 0)
+    # VALIDACIÓN 2: Cantidad válida (> 0)
     if transferencia.cantidad <= 0:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="La cantidad debe ser mayor a 0"
         )
     
-    # ✓ VALIDACIÓN 2.5: Máximo 500€ por transferencia
+    # VALIDACIÓN 3: Máximo 500€ por transferencia
     if transferencia.cantidad > 500:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="El máximo por transferencia es de 500€"
         )
     
-    # ✓ VALIDACIÓN 3: Saldo suficiente
+    # VALIDACIÓN 4: Saldo suficiente
     if usuario_autenticado.saldo < transferencia.cantidad:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Saldo insuficiente. Tienes {usuario_autenticado.saldo}€"
         )
     
-    # ✓ VALIDACIÓN 4: Buscar receptor por teléfono
+    # VALIDACIÓN 5: Buscar receptor por teléfono
     receptor = db.query(Cliente).filter(
         Cliente.telefono == transferencia.numero_receptor
     ).first()
@@ -98,19 +64,15 @@ async def transferir_bizum(
             detail="Receptor no encontrado. Verifica el número de teléfono"
         )
     
-    # ✓ VALIDACIÓN 5: Verificar que el nombre coincide
-    # Comparar el nombre (insensible a mayúsculas/minúsculas)
+    # VALIDACIÓN 6: Verificar que el nombre coincide
     if receptor.nombre.lower() != transferencia.nombre_receptor.lower():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"El nombre no coincide. El usuario con ese teléfono es: {receptor.nombre}"
         )
     
-    # ============================================================
-    # TRANSACCIÓN ATÓMICA: Actualizar saldos
-    # ============================================================
-    # Una operación atómica = se ejecuta todo o nada (si falla una parte, se revierte todo)
-    
+    # TRANSACCIÓN ATÓMICA: Actualizar saldos (se ejecuta todo o nada, si falla una parte, se revierte todo)
+
     try:
         # 1. Restar del emisor
         usuario_autenticado.saldo -= transferencia.cantidad
@@ -128,7 +90,7 @@ async def transferir_bizum(
         
         # 4. Guardar todo en la BD
         db.add(nueva_transaccion)
-        db.commit()  # ✓ Si llega aquí, la transacción se guarda
+        db.commit()  # Si llega aquí, la transacción se guarda
         
     except Exception as e:
         # Si hay error, revertir todos los cambios
@@ -138,7 +100,7 @@ async def transferir_bizum(
             detail="Error al procesar la transferencia. Vuelva a intentarlo"
         )
     
-    # ✓ Transferencia exitosa
+    # Transferencia exitosa
     return {
         "estado": "éxito",
         "mensaje": f"Transferencia de {transferencia.cantidad}€ a {receptor.nombre} realizada",
@@ -148,32 +110,18 @@ async def transferir_bizum(
     }
 
 
-# ============================================================================
-# RUTA: GET /ultimas - OBTENER LAS 5 ÚLTIMAS TRANSACCIONES
-# ============================================================================
+# RUTA: GET /ultimas (obtener últimas 5 transacciones del usuario)
 
 @router.get("/ultimas", response_model=list[TransaccionResponse])
 async def obtener_ultimas_transacciones(
     usuario_autenticado: Cliente = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    GET /transacciones/ultimas - Obtener las 5 últimas transacciones del usuario.
-    
-    ⚠️ PROTEGIDA: Requiere JWT token
-    
-    Devuelve las 5 transacciones más recientes (enviadas o recibidas) con información
-    de emisor y receptor.
-    
-    Returns:
-        Lista de hasta 5 TransaccionResponse ordenadas por fecha (más reciente primero)
-    """
-    
+
     usuario_id = usuario_autenticado.id
-    print(f"🔍 Buscando transacciones para usuario ID: {usuario_id}")
+    print(f"Buscando transacciones para usuario ID: {usuario_id}")
     
     # Obtener todas las transacciones del usuario (enviadas + recibidas) ordenadas por fecha
-    # Usar joinedload para cargar las relaciones de emisor y receptor
     transacciones = db.query(Transaccion).options(
         joinedload(Transaccion.emisor),
         joinedload(Transaccion.receptor)
@@ -181,10 +129,10 @@ async def obtener_ultimas_transacciones(
         (Transaccion.id_emisor == usuario_id) | (Transaccion.id_receptor == usuario_id)
     ).order_by(Transaccion.fecha.desc()).limit(5).all()
     
-    print(f"📊 Encontradas {len(transacciones)} transacciones")
+    print(f"Encontradas {len(transacciones)} transacciones")
     
     if not transacciones:
-        print("⚠️ Sin transacciones encontradas")
+        print("Sin transacciones encontradas")
         return []
     
     # Convertir a schemas de respuesta con información adicional
@@ -197,7 +145,7 @@ async def obtener_ultimas_transacciones(
             nombre_emisor = t.emisor.nombre if t.emisor else None
             nombre_receptor = t.receptor.nombre if t.receptor else None
             
-            print(f"  📝 Trans #{t.id}: {email_emisor} → {email_receptor} | {t.cantidad}€")
+            print(f"Trans #{t.id}: {email_emisor} → {email_receptor} | {t.cantidad}€")
             
             # Crear el diccionario para TransaccionResponse
             trans_dict = {
@@ -216,15 +164,13 @@ async def obtener_ultimas_transacciones(
             trans_response = TransaccionResponse(**trans_dict)
             resultado.append(trans_response)
         except Exception as e:
-            print(f"❌ Error procesando transacción: {e}")
+            print(f"Error procesando transacción: {e}")
     
-    print(f"✅ Retornando {len(resultado)} transacciones")
+    print(f"Retornando {len(resultado)} transacciones")
     return resultado
 
 
-# ============================================================================
-# RUTA: GET /transacciones/{cliente_id} - HISTORIAL DE MOVIMIENTOS
-# ============================================================================
+# RUTA: GET /transacciones/{cliente_id} (historial de movimientos)
 
 @router.get("/{cliente_id}", response_model=HistorialResponse)
 async def obtener_historial(
@@ -233,7 +179,7 @@ async def obtener_historial(
     db: Session = Depends(get_db)
 ):
 
-    # ⚠️ SEGURIDAD: Verificar que solo ve su propio historial
+    # Verificar que solo ve su propio historial
     if usuario_autenticado.id != cliente_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

@@ -1,12 +1,10 @@
-// ============================================================================
-// SCRIPT PARA DASHBOARD - CARGAR SALDO Y ÚLTIMAS TRANSACCIONES
-// ============================================================================
+// SCRIPT PARA DASHBOARD (CARGAR SALDO Y ÚLTIMAS TRANSACCIONES)
 
 async function cargarSaldoUsuario() {
-    console.log('💰 Cargando saldo del usuario...');
+    console.log('Cargando saldo del usuario...');
     
     if (!estaAutenticado()) {
-        console.log('⚠️ No autenticado');
+        console.log('No autenticado');
         return;
     }
     
@@ -14,6 +12,7 @@ async function cargarSaldoUsuario() {
     const email = localStorage.getItem('email');
     
     try {
+
         // Llamar a GET /usuarios/{email}
         const respuesta = await fetch(API_URL + `/usuarios/${email}`, {
             method: 'GET',
@@ -25,18 +24,18 @@ async function cargarSaldoUsuario() {
         
         if (respuesta.ok) {
             const usuario = await respuesta.json();
-            console.log('✅ Usuario cargado:', usuario);
+            console.log('Usuario cargado:', usuario);
             
             mostrarSaldo(usuario);
         } else if (respuesta.status === 401) {
-            console.log('⚠️ Sesión expirada');
+            console.log('Sesión expirada');
             localStorage.removeItem('token');
             window.location.href = '/acceso';
         } else {
-            console.error('❌ Error al cargar usuario');
+            console.error('Error al cargar usuario');
         }
     } catch (error) {
-        console.error('❌ Error de conexión:', error);
+        console.error('Error de conexión:', error);
     }
 }
 
@@ -44,7 +43,7 @@ function mostrarSaldo(usuario) {
     const divSaldo = document.querySelector('.saldo');
     
     if (!divSaldo) {
-        console.error('❌ No se encontró el div .saldo');
+        console.error('No se encontró el div .saldo');
         return;
     }
     
@@ -61,30 +60,27 @@ function mostrarSaldo(usuario) {
         pMonto.textContent = saldoTexto;
     }
     
-    console.log('✅ Saldo mostrado');
+    console.log('Saldo mostrado');
 }
 
-// ============================================================================
-// SCRIPT PARA DASHBOARD - CARGAR ÚLTIMAS TRANSACCIONES
-// ============================================================================
-// Este archivo carga las 5 últimas transacciones del usuario
-// ============================================================================
+// Cargar las 5 últimas transacciones del usuario
 
 async function cargarUltimasTransacciones() {
-    console.log('📋 Cargando últimas transacciones...');
+    console.log('Cargando últimas transacciones...');
     
     if (!estaAutenticado()) {
-        console.log('⚠️ No autenticado');
+        console.log('No autenticado');
         return;
     }
     
     const token = localStorage.getItem('token');
     if (!token) {
-        console.log('⚠️ Token no disponible, no se puede cargar el historial de transacciones');
+        console.log('Token no disponible, no se puede cargar el historial de transacciones');
         return;
     }
     
     try {
+
         // Llamar a GET /transacciones/ultimas
         const respuesta = await fetch(API_URL + '/transacciones/ultimas', {
             method: 'GET',
@@ -96,33 +92,32 @@ async function cargarUltimasTransacciones() {
         
         if (respuesta.ok) {
             const transacciones = await respuesta.json();
-            console.log('✅ Transacciones cargadas:', transacciones);
+            console.log('Transacciones cargadas:', transacciones);
             
             mostrarTransacciones(transacciones);
         } else if (respuesta.status === 401) {
-            console.log('⚠️ Sesión expirada');
+            console.log('Sesión expirada');
             localStorage.removeItem('token');
             window.location.href = '/acceso';
         } else {
             const errorText = `Error al cargar transacciones. Status: ${respuesta.status}`;
-            console.error('❌', errorText);
+            console.error(errorText);
             window.alert(errorText);
         }
     } catch (error) {
         const errorText = `Error de conexión: ${error.message}`;
-        console.error('❌', errorText);
+        console.error(errorText);
         window.alert(errorText);
     }
 }
 
-// ============================================================================
 // FUNCIÓN: MOSTRAR TRANSACCIONES EN EL HTML
-// ============================================================================
+
 function mostrarTransacciones(transacciones) {
     const divTransacciones = document.querySelector('.historial-transacciones');
     
     if (!divTransacciones) {
-        console.error('❌ No se encontró el div .historial-transacciones');
+        console.error('No se encontró el div .historial-transacciones');
         return;
     }
     
@@ -135,13 +130,14 @@ function mostrarTransacciones(transacciones) {
     html += '<div class="lista-transacciones">';
     
     const usuarioActual = localStorage.getItem('email');
-    console.log('👤 Usuario actual:', usuarioActual);
+    console.log('Usuario actual:', usuarioActual);
     
     transacciones.forEach(transaccion => {
         try {
+
             // Validar que tenemos los datos necesarios
             if (!transaccion || !transaccion.fecha || transaccion.cantidad === undefined) {
-                console.warn('⚠️ Transacción incompleta:', transaccion);
+                console.warn('Transacción incompleta:', transaccion);
                 return;
             }
             
@@ -193,26 +189,24 @@ function mostrarTransacciones(transacciones) {
                 </div>
             `;
         } catch (error) {
-            console.error('❌ Error al procesar transacción:', error, transaccion);
+            console.error('Error al procesar transacción:', error, transaccion);
         }
     });
     
     html += '</div>';
     
     divTransacciones.innerHTML = html;
-    console.log('✅ Transacciones mostradas');
+    console.log('Transacciones mostradas');
 }
 
-// ============================================================================
-// CUANDO CARGA EL DASHBOARD
-// ============================================================================
+// CUANDO CARGA EL DASHBOARD 
 
 // Función para inicializar el dashboard
 async function inicializarDashboard() {
-    console.log('📊 Inicializando dashboard...');
+    console.log('Inicializando dashboard...');
     
     if (!estaAutenticado()) {
-        console.log('⚠️ Usuario no autenticado, redirigiendo a login');
+        console.log('Usuario no autenticado, redirigiendo a login');
         window.location.href = '/acceso';
         return;
     }
@@ -225,13 +219,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     await inicializarDashboard();
 
     if (!localStorage.getItem('token')) {
-        console.log('⚠️ No hay token en localStorage, no se cargan las transacciones.');
+        console.log('No hay token en localStorage, no se cargan las transacciones.');
         return;
     }
 
     if (document.querySelector('.historial-transacciones')) {
         await cargarUltimasTransacciones();
     } else {
-        console.log('ℹ️ Contenedor de transacciones ausente, no se cargan movimientos.');
+        console.log('Contenedor de transacciones ausente, no se cargan movimientos.');
     }
 });

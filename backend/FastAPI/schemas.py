@@ -1,15 +1,10 @@
-# ============================================================================
 # SCHEMAS PYDANTIC - VALIDACIÓN DE DATOS EN PETICIONES
-# ============================================================================
-# Los Schemas validan y transforman los datos que recibimos del cliente.
-# Se usan para: validar emails, contraseñas, saldos, etc.
-# ============================================================================
 
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime, date
 from typing import Optional
 
-# ==================== SCHEMAS DE CLIENTE ====================
+# SCHEMAS DE CLIENTE
 
 class ClienteRegistro(BaseModel):
     """Datos requeridos para registrar un nuevo cliente"""
@@ -37,10 +32,10 @@ class ClienteActualizar(BaseModel):
     """Datos para actualizar perfil del cliente (PUT /clientes/{id})"""
     nombre: Optional[str] = Field(None, min_length=3, max_length=100)
     telefono: Optional[str] = None
-    # Email y DNI NO se pueden cambiar (por seguridad)
+    # Email y DNI NO se pueden cambiar
 
 class ClienteResponse(BaseModel):
-    """Datos de cliente (sin password por seguridad)"""
+    """Datos de cliente (sin contraseña por seguridad)"""
     id: int
     nombre: str
     apellidos: str
@@ -76,7 +71,7 @@ class ClienteActualizarCompleto(BaseModel):
     situacion_laboral: str
 
 
-# ==================== SCHEMAS DE TRANSACCIONES ====================
+# SCHEMAS DE TRANSACCIONES
 
 class TransaccionBizum(BaseModel):
     cantidad: float = Field(..., gt=0, description="Cantidad a transferir (mayor que 0)")
@@ -92,10 +87,10 @@ class TransaccionResponse(BaseModel):
     cantidad: float
     concepto: Optional[str]
     fecha: datetime
-    emisor: Optional[str] = None  # Email del emisor
-    receptor: Optional[str] = None  # Email del receptor
-    nombre_emisor: Optional[str] = None  # Nombre del emisor
-    nombre_receptor: Optional[str] = None  # Nombre del receptor (si está disponible)
+    emisor: Optional[str] = None  
+    receptor: Optional[str] = None 
+    nombre_emisor: Optional[str] = None 
+    nombre_receptor: Optional[str] = None 
     
     class Config:
         from_attributes = True
@@ -106,7 +101,7 @@ class HistorialResponse(BaseModel):
     transacciones_enviadas: list[TransaccionResponse]
 
 
-# ==================== SCHEMAS DE RESPUESTAS JWT ====================
+# SCHEMAS DE RESPUESTAS JWT
 
 class Token(BaseModel):
     access_token: str
